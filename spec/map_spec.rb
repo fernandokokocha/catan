@@ -208,6 +208,24 @@ describe Map do
       expect(@map.get_place(:last).spot).to eq(5)
     end
 
+    it 'knows that 2, 6 and 24 are neighbours of place 1' do
+      expect(@map.get_neighbours(1)).to contain_exactly(@map.get_place(2),
+                                                        @map.get_place(6),
+                                                        @map.get_place(24))
+    end
+
+    it 'knows that 1, 3 and 9 are neighbours of place 2' do
+      expect(@map.get_neighbours(2)).to contain_exactly(@map.get_place(1),
+                                                        @map.get_place(3),
+                                                        @map.get_place(9))
+    end
+
+    it 'knows that 2, 4 and 12 are neighbours of place 3' do
+      expect(@map.get_neighbours(3)).to contain_exactly(@map.get_place(2),
+                                                        @map.get_place(4),
+                                                        @map.get_place(12))
+    end
+
   end
 
 end

@@ -352,7 +352,6 @@ describe Map do
     it 'fails when try to get neighbours of too high-numbered place' do
       expect{ @map.get_neighbours(55) }.to raise_error(Map::BeyondRangeError)
     end
-
   end
 
 end

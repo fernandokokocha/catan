@@ -60,11 +60,7 @@ class Map
 
   private
   def prepare_places
-    result = []
-    places = (@layers * @layers * 6)
-    for index in (1..places) do
-      result << Place.new(index)
-    end
-    result
+    max = (@layers * @layers * 6)
+    (1..max).map { |index| Place.new(index) }
   end
 end

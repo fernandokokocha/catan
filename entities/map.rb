@@ -1,12 +1,14 @@
 require_relative 'place'
+require_relative 'field'
 
 class Map
-  attr_accessor :layers, :places
+  attr_accessor :layers, :places, :fields
 
   def initialize layers
     raise Error if layers <= 0
     @layers = layers
     @places = prepare_places
+    @fields = prepare_fields
   end
 
   def get_place index
@@ -62,5 +64,10 @@ class Map
   def prepare_places
     max = (@layers * @layers * 6)
     (1..max).map { |index| Place.new(index) }
+  end
+
+  def prepare_fields
+    max = (1+6+12)
+    (1..max).map { |index| Field.new(index) }
   end
 end

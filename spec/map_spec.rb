@@ -21,7 +21,7 @@ describe Map do
       @map = Map.new(3)
     end
 
-    it 'has places included' do
+    it 'has places' do
       expect(@map.places).not_to be_empty
       @map.places.each do |place|
         expect(place).to be_instance_of(Place)
@@ -32,7 +32,7 @@ describe Map do
       expect(@map.places.count).to eq(@map.layers * @map.layers * 6)
     end
 
-    it 'has every place with its number' do
+    it 'has every place numbered' do
       @map.places.each.with_index(1) do |place, index|
         expect(place.index).to eq(index)
       end
@@ -352,6 +352,24 @@ describe Map do
     it 'fails when try to get neighbours of too high-numbered place' do
       expect{ @map.get_neighbours(55) }.to raise_error(Map::BeyondRangeError)
     end
+
+    it 'has real fields' do
+      expect(@map.fields).not_to be_empty
+      @map.fields.each do |field|
+        expect(field).to be_instance_of(Field)
+      end
+    end
+
+    it 'has proper number of fields' do
+      expect(@map.fields.count).to eq(1 + 6 + 12)
+    end
+
+    it 'has every field numbered' do
+      @map.fields.each.with_index(1) do |field, index|
+        expect(field.index).to eq(index)
+      end
+    end
+
   end
 
 end

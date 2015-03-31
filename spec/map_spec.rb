@@ -52,6 +52,10 @@ describe Map do
       expect(@map.get_place(:last)).to be(@map.places.last)
     end
 
+    it 'return nil when try to get nil-place' do
+      expect(@map.get_place(nil)).to be_nil
+    end
+
     it 'fails when try to get too low-numbered place' do
       expect{ @map.get_place(0) }.to raise_error(Map::BeyondRangeError)
     end
@@ -208,22 +212,145 @@ describe Map do
       expect(@map.get_place(:last).spot).to eq(5)
     end
 
-    it 'knows that 2, 6 and 24 are neighbours of place 1' do
+    it 'knows that places 2, 6 and 24 are neighbours of place 1' do
       expect(@map.get_neighbours(1)).to contain_exactly(@map.get_place(2),
                                                         @map.get_place(6),
                                                         @map.get_place(24))
     end
 
-    it 'knows that 1, 3 and 9 are neighbours of place 2' do
+    it 'knows that places 1, 3 and 9 are neighbours of place 2' do
       expect(@map.get_neighbours(2)).to contain_exactly(@map.get_place(1),
                                                         @map.get_place(3),
                                                         @map.get_place(9))
     end
 
-    it 'knows that 2, 4 and 12 are neighbours of place 3' do
+    it 'knows that places 2, 4 and 12 are neighbours of place 3' do
       expect(@map.get_neighbours(3)).to contain_exactly(@map.get_place(2),
                                                         @map.get_place(4),
                                                         @map.get_place(12))
+    end
+
+    it 'knows that places 5, 1 and 21 are neighbours of place 6' do
+      expect(@map.get_neighbours(6)).to contain_exactly(@map.get_place(5),
+                                                        @map.get_place(1),
+                                                        @map.get_place(21))
+    end
+
+    it 'knows that places 8, 24 and 54 are neighbours of place 7' do
+      expect(@map.get_neighbours(7)).to contain_exactly(@map.get_place(8),
+                                                        @map.get_place(24),
+                                                        @map.get_place(54))
+    end
+
+    it 'knows that places 7, 9 and 27 are neighbours of place 8' do
+      expect(@map.get_neighbours(8)).to contain_exactly(@map.get_place(7),
+                                                        @map.get_place(9),
+                                                        @map.get_place(27))
+    end
+
+    it 'knows that places 2, 8 and 10 are neighbours of place 9' do
+      expect(@map.get_neighbours(9)).to contain_exactly(@map.get_place(2),
+                                                        @map.get_place(8),
+                                                        @map.get_place(10))
+    end
+
+    it 'knows that places 9, 11 and 29 are neighbours of place 10' do
+      expect(@map.get_neighbours(10)).to contain_exactly(@map.get_place(9),
+                                                        @map.get_place(11),
+                                                        @map.get_place(29))
+    end
+
+    it 'knows that places 10, 12 and 32 are neighbours of place 11' do
+      expect(@map.get_neighbours(11)).to contain_exactly(@map.get_place(10),
+                                                         @map.get_place(12),
+                                                         @map.get_place(32))
+    end
+
+    it 'knows that places 3, 11 and 13 are neighbours of place 12' do
+      expect(@map.get_neighbours(12)).to contain_exactly(@map.get_place(3),
+                                                         @map.get_place(11),
+                                                         @map.get_place(13))
+    end
+
+    it 'knows that places 22, 24 and 52 are neighbours of place 23' do
+      expect(@map.get_neighbours(23)).to contain_exactly(@map.get_place(22),
+                                                         @map.get_place(24),
+                                                         @map.get_place(52))
+    end
+
+    it 'knows that places 1, 7 and 23 are neighbours of place 24' do
+      expect(@map.get_neighbours(24)).to contain_exactly(@map.get_place(1),
+                                                         @map.get_place(7),
+                                                         @map.get_place(23))
+    end
+
+    it 'knows that places 26 and 54 are neighbours of place 25' do
+      expect(@map.get_neighbours(25)).to contain_exactly(@map.get_place(26),
+                                                         @map.get_place(54))
+    end
+
+    it 'knows that places 25 and 27 are neighbours of place 26' do
+      expect(@map.get_neighbours(26)).to contain_exactly(@map.get_place(25),
+                                                         @map.get_place(27))
+    end
+
+    it 'knows that places 8, 26 and 28 are neighbours of place 27' do
+      expect(@map.get_neighbours(27)).to contain_exactly(@map.get_place(8),
+                                                         @map.get_place(26),
+                                                         @map.get_place(28))
+    end
+
+    it 'knows that places 27 and 29 are neighbours of place 28' do
+      expect(@map.get_neighbours(28)).to contain_exactly(@map.get_place(27),
+                                                         @map.get_place(29))
+    end
+
+    it 'knows that places 10, 28 and 30 are neighbours of place 29' do
+      expect(@map.get_neighbours(29)).to contain_exactly(@map.get_place(10),
+                                                         @map.get_place(28),
+                                                         @map.get_place(30))
+    end
+
+    it 'knows that places 29 and 31 are neighbours of place 30' do
+      expect(@map.get_neighbours(30)).to contain_exactly(@map.get_place(29),
+                                                         @map.get_place(31))
+    end
+
+    it 'knows that places 11, 31 and 33 are neighbours of place 32' do
+      expect(@map.get_neighbours(32)).to contain_exactly(@map.get_place(11),
+                                                         @map.get_place(31),
+                                                         @map.get_place(33))
+    end
+
+    it 'knows that places 13, 33 and 35 are neighbours of place 34' do
+      expect(@map.get_neighbours(34)).to contain_exactly(@map.get_place(13),
+                                                         @map.get_place(33),
+                                                         @map.get_place(35))
+    end
+
+    it 'knows that places 23, 51 and 53 are neighbours of place 52' do
+      expect(@map.get_neighbours(52)).to contain_exactly(@map.get_place(23),
+                                                         @map.get_place(51),
+                                                         @map.get_place(53))
+    end
+
+    it 'knows that places 52 and 54 are neighbours of place 53' do
+      expect(@map.get_neighbours(53)).to contain_exactly(@map.get_place(52),
+                                                         @map.get_place(54))
+    end
+
+    it 'knows that places 7, 25 and 53 are neighbours of place 54' do
+      expect(@map.get_neighbours(54)).to contain_exactly(@map.get_place(7),
+                                                         @map.get_place(25),
+                                                         @map.get_place(53))
+    end
+
+    it 'fails when try to get neighbours of too low-numbered place' do
+      expect{ @map.get_neighbours(0) }.to raise_error(Map::BeyondRangeError)
+    end
+
+    it 'fails when try to get neighbours of too high-numbered place' do
+      expect{ @map.get_neighbours(55) }.to raise_error(Map::BeyondRangeError)
     end
 
   end

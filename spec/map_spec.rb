@@ -2,13 +2,13 @@ require 'spec_helper'
 
 describe Map do
   it 'can take other numbers of layers' do
-    expect(Map.new(5).layers).to eq(5)
-    expect(Map.new(8).layers).to eq(8)
+    expect{ Map.new(5) }.not_to raise_error
+    expect{ Map.new(8) }.not_to raise_error
   end
 
   it 'cannot take non-positive numbers of layers' do
-    expect{ Map.new(0).layers }.to raise_error
-    expect{ Map.new(-1).layers }.to raise_error
+    expect{ Map.new(0) }.to raise_error
+    expect{ Map.new(-1) }.to raise_error
   end
 
   it 'can have other numbers of places' do
@@ -18,7 +18,12 @@ describe Map do
 
   describe 'when created properly' do
     before (:each) do
-      @map = Map.new(3)
+      @layers = 3
+      @map = Map.new(@layers)
+    end
+
+    it 'remembers number of layers' do
+      expect(@map.layers).to eq(@layers)
     end
 
     it 'has places' do
@@ -29,7 +34,7 @@ describe Map do
     end
 
     it 'has proper number of places' do
-      expect(@map.places.count).to eq(@map.layers * @map.layers * 6)
+      expect(@map.places.count).to eq(@layers * @layers * 6)
     end
 
     it 'has every place numbered' do
@@ -370,6 +375,79 @@ describe Map do
       end
     end
 
+    it 'can get every field by its index' do
+      @map.fields.each.with_index(1) do |field, index|
+        expect(@map.get_field(index)).to be(field)
+      end
+    end
+
+    it 'can access to first field' do
+      expect(@map.get_field(:first)).to be(@map.fields.first)
+    end
+
+    it 'can access to last field' do
+      expect(@map.get_field(:last)).to be(@map.fields.last)
+    end
+
+    it 'fails when try to get too low-numbered field' do
+      expect{ @map.get_field(0) }.to raise_error(Map::BeyondRangeError)
+    end
+
+    it 'fails when try to get too high-numbered field' do
+      expect{ @map.get_field(20) }.to raise_error(Map::BeyondRangeError)
+    end
+
+    it 'returns nil when try to get nil field' do
+      expect(@map.get_field(nil)).to be(nil)
+    end
+
+    it 'knows that fields 1, 2 and 7 are nearby place 1' do
+      expect(@map.get_fields_of_place(1)).to contain_exactly(@map.get_field(1),
+                                                             @map.get_field(7),
+                                                             @map.get_field(2))
+    end
+
+    it 'knows that fields 1, 2 and 7 are nearby place 2' do
+      expect(@map.get_fields_of_place(2)).to contain_exactly(@map.get_field(1),
+                                                             @map.get_field(2),
+                                                             @map.get_field(3))
+    end
+
+    it 'knows that fields 1, 3 and 4 are nearby place 3' do
+      expect(@map.get_fields_of_place(3)).to contain_exactly(@map.get_field(1),
+                                                             @map.get_field(3),
+                                                             @map.get_field(4))
+    end
+
+    it 'knows that fields 1, 6 and 7 are nearby place 6' do
+      expect(@map.get_fields_of_place(6)).to contain_exactly(@map.get_field(1),
+                                                             @map.get_field(6),
+                                                             @map.get_field(7))
+    end
+
+    it 'knows that fields 2, 8 and 19 are nearby place 7' do
+      expect(@map.get_fields_of_place(7)).to contain_exactly(@map.get_field(2),
+                                                             @map.get_field(19),
+                                                             @map.get_field(8))
+    end
+
+    it 'knows that fields 2, 8 and 9 are nearby place 8' do
+      expect(@map.get_fields_of_place(8)).to contain_exactly(@map.get_field(2),
+                                                             @map.get_field(8),
+                                                             @map.get_field(9))
+    end
+
+    it 'knows that fields 2, 3 and 9 are nearby place 9' do
+      expect(@map.get_fields_of_place(9)).to contain_exactly(@map.get_field(2),
+                                                             @map.get_field(3),
+                                                             @map.get_field(9))
+    end
+
+    it 'knows that fields 2, 3 and 9 are nearby place 10' do
+      expect(@map.get_fields_of_place(10)).to contain_exactly(@map.get_field(3),
+                                                              @map.get_field(9),
+                                                              @map.get_field(10))
+    end
   end
 
 end

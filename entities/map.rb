@@ -12,37 +12,36 @@ class Map
   end
 
   def get_place index
-    if index.nil?
-      return nil
-    elsif index == :first
-      return @places.first
-    elsif index == :last
-      return @places.last
-    end
+    return nil if index.nil?
+    return @places.first if index == :first
+    return @places.last if index == :last
     raise BeyondRangeError if index < 1
     raise BeyondRangeError if index > 54
     @places[index-1]
   end
 
   def get_field index
-    if index.nil?
-      return nil
-    elsif index == :first
-      return @fields.first
-    elsif index == :last
-      return @fields.last
-    end
+    return nil if index.nil?
+    return @fields.first if index == :first
+    return @fields.last if index == :last
     raise BeyondRangeError if index < 1
     raise BeyondRangeError if index > 19
     @fields[index-1]
   end
 
   def get_neighbours index
-    get_neighbours_indexes(index).map { |i| get_place(i) }.compact
+    return nil if index.nil?
+    get_neighbours_indexes(index).map { |i| get_place(i) }
   end
 
   def get_fields_of_place index
+    return nil if index.nil?
     get_fields_indexes_of_place(index).map { |i| get_field(i) }
+  end
+
+  def get_places_of_field index
+    return nil if index.nil?
+    get_places_indexes_of_field(index).map { |i| get_place(i) }
   end
 
   class BeyondRangeError < StandardError
@@ -82,41 +81,49 @@ class Map
           result[2] -= 6 if result[2] > 6
         end
       else
-        if [1,2,4].include? place.spot
-          result[2] = nil
-        else
+        if [3,5].include? place.spot
           result[2] = 2 + place.spot + place.side*3
           result[2] -= 18 if result[2] > 24
         end
     end
-    result
+    result.compact
   end
 
   def get_fields_indexes_of_place(index)
     place = get_place(index)
 
     result = Array.new(3)
-    if index <=6
-      result[0] = 1
-      result[1] = index
-      result[1] += 6 if result[1] < 2
-      result[2] = index + 1
-    else
-      if index < 10
-        result[0] = 2
-      else
-        result[0] = 3
-      end
+    base = place.layer < 3 ? 1 : 6
+    result[0] = base + place.side*(place.layer - 1)
+    result[0] += 1 if place.spot > 3
+    case place.layer
+      when 1
+        result[1] = index
+        result[1] += 6 if result[1] < 2
+        result[2] = index + 1
+      when 2
+        result[1] = index - place.side + 1
+        result[1] += 12 if result[1] <= 7
 
-      result[1] = index - place.side + 1
-      result[1] += 12 if result[1] <= 7
-
-      if [1,2].include? place.spot
-        result[2] = index - place.side + 2
+        if [1,2].include? place.spot
+          result[2] = index - place.side + 2
+        else
+          result[2] = 2 + place.side
+          result[2] -= 6 if result[2] > 7
+        end
       else
-        result[2] = 3
-      end
+        if place.spot == 3
+          result[1] = 6 + place.side*2 + 1
+        elsif place.spot == 5
+          result[1] = 6 + place.side*2 + 2
+          result[1] -= 12 if result[1] > 19
+        end
     end
-    result
+    result.compact
+  end
+
+  def get_places_indexes_of_field(index)
+    get_field(index)
+    (1..54).select { |i| get_fields_indexes_of_place(i).include? index}
   end
 end

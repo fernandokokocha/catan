@@ -12,8 +12,8 @@ describe Map do
   end
 
   it 'can have other numbers of places' do
-    expect(Map.new(5).places.count).to eq(5 * 5 * 6)
-    expect(Map.new(2).places.count).to eq(2 * 2 * 6)
+    expect(Map.new(5).places_count).to eq(5 * 5 * 6)
+    expect(Map.new(2).places_count).to eq(2 * 2 * 6)
   end
 
   describe 'when created with 3 layers' do
@@ -23,38 +23,31 @@ describe Map do
     end
 
     it 'remembers number of layers' do
-      expect(@map.layers).to eq(@layers)
-    end
-
-    it 'has places' do
-      expect(@map.places).not_to be_empty
-      @map.places.each do |place|
-        expect(place).to be_instance_of(Place)
-      end
+      expect(@map.layers_count).to eq(@layers)
     end
 
     it 'has proper number of places' do
-      expect(@map.places.count).to eq(@layers * @layers * 6)
-    end
-
-    it 'has every place numbered' do
-      @map.places.each.with_index(1) do |place, index|
-        expect(place.index).to eq(index)
-      end
+      expect(@map.places_count).to eq(@layers * @layers * 6)
     end
 
     it 'can get every place by its index' do
-      @map.places.each.with_index(1) do |place, index|
-        expect(@map.get_place(index)).to be(place)
+      (1..@map.places_count).each do |index|
+        expect(@map.get_place(index)).to be_instance_of(Place)
+      end
+    end
+
+    it 'has every place numbered' do
+      (1..@map.places_count).each do |index|
+        expect(@map.get_place(index).index).to eq(index)
       end
     end
 
     it 'can access to first place' do
-      expect(@map.get_place(:first)).to be(@map.places.first)
+      expect(@map.get_place(:first).index).to eq(1)
     end
 
     it 'can access to last place' do
-      expect(@map.get_place(:last)).to be(@map.places.last)
+      expect(@map.get_place(:last).index).to eq(@map.places_count)
     end
 
     it 'return nil when try to get nil-place' do
@@ -358,35 +351,46 @@ describe Map do
       expect{ @map.get_neighbours(55) }.to raise_error(Map::BeyondRangeError)
     end
 
-    it 'has real fields' do
-      expect(@map.fields).not_to be_empty
-      @map.fields.each do |field|
-        expect(field).to be_instance_of(Field)
-      end
-    end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     it 'has proper number of fields' do
-      expect(@map.fields.count).to eq(1 + 6 + 12)
-    end
-
-    it 'has every field numbered' do
-      @map.fields.each.with_index(1) do |field, index|
-        expect(field.index).to eq(index)
-      end
+      expect(@map.fields_count).to eq(1 + 6 + 12)
     end
 
     it 'can get every field by its index' do
-      @map.fields.each.with_index(1) do |field, index|
-        expect(@map.get_field(index)).to be(field)
+      (1..@map.fields_count).each do |index|
+        expect(@map.get_field(index)).to be_instance_of(Field)
+      end
+    end
+
+    it 'has every field numbered' do
+      (1..@map.fields_count).each do |index|
+        expect(@map.get_field(index).index).to eq(index)
       end
     end
 
     it 'can access to first field' do
-      expect(@map.get_field(:first)).to be(@map.fields.first)
+      expect(@map.get_field(:first).index).to eq(1)
     end
 
     it 'can access to last field' do
-      expect(@map.get_field(:last)).to be(@map.fields.last)
+      expect(@map.get_field(:last).index).to eq(@map.fields_count)
+    end
+
+    it 'return nil when try to get nil-field' do
+      expect(@map.get_field(nil)).to be_nil
     end
 
     it 'fails when try to get too low-numbered field' do

@@ -2,11 +2,13 @@ require_relative 'place'
 require_relative 'field'
 
 class Map
-  attr_accessor :layers, :places, :fields
+  private
+  attr_accessor :layers_count, :places, :fields
 
+  public
   def initialize layers
     raise Error if layers <= 0
-    @layers = layers
+    @layers_count = layers
     @places = prepare_places
     @fields = prepare_fields
   end
@@ -44,12 +46,24 @@ class Map
     get_places_indexes_of_field(index).map { |i| get_place(i) }
   end
 
+  def layers_count
+    @layers_count
+  end
+
+  def places_count
+    @places.count
+  end
+
+  def fields_count
+    @fields.count
+  end
+
   class BeyondRangeError < StandardError
   end
 
   private
   def prepare_places
-    max = (@layers * @layers * 6)
+    max = (@layers_count * @layers_count * 6)
     (1..max).map { |index| Place.new(index) }
   end
 

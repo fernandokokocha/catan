@@ -2,10 +2,8 @@ require_relative 'place'
 require_relative 'field'
 
 class Map
-  private
   attr_accessor :layers_count, :places, :fields
 
-  public
   def initialize layers
     raise Error if layers <= 0
     @layers_count = layers

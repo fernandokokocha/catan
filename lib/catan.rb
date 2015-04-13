@@ -1,9 +1,7 @@
 require_relative 'entities/map.rb'
+require_relative 'entities/player.rb'
+
 
 class Catan
-  attr_accessor :map
-
-  def initialize
-    @map = Map.new(3)
-  end
+  attr_accessor :map, :players
 end

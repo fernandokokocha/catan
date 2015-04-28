@@ -1,5 +1,5 @@
 class Field
-  attr_accessor :index
+  attr_reader :index
 
   def initialize index
     @index = index

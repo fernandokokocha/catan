@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Map do
+  it 'cannot take non-positive numbers of layers' do
+    expect{ Map.new(0) }.to raise_error(Map::BeyondRangeError)
+    expect{ Map.new(-1) }.to raise_error(Map::BeyondRangeError)
+  end
+
   it 'can take other numbers of layers' do
     expect{ Map.new(5) }.not_to raise_error
     expect{ Map.new(8) }.not_to raise_error
-  end
-
-  it 'cannot take non-positive numbers of layers' do
-    expect{ Map.new(0) }.to raise_error
-    expect{ Map.new(-1) }.to raise_error
   end
 
   it 'can have other numbers of places' do
@@ -402,7 +402,7 @@ describe Map do
     end
 
     it 'returns nil when try to get nil field' do
-      expect(@map.get_field(nil)).to be(nil)
+      expect(@map.get_field(nil)).to be_nil
     end
 
     it 'knows that fields 1, 2 and 7 are nearby place 1' do
@@ -604,7 +604,7 @@ describe Map do
     end
 
     it 'returns nil when try to get nil fields of place' do
-      expect(@map.get_fields_of_place(nil)).to be(nil)
+      expect(@map.get_fields_of_place(nil)).to be_nil
     end
 
     it 'knows that places 1, 2, 3, 4, 5 and 6 are nearby field 1' do
@@ -670,7 +670,7 @@ describe Map do
     end
 
     it 'returns nil when try to get nil places of field' do
-      expect(@map.get_places_of_field(nil)).to be(nil)
+      expect(@map.get_places_of_field(nil)).to be_nil
     end
   end
 end

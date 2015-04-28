@@ -2,10 +2,10 @@ require_relative 'place'
 require_relative 'field'
 
 class Map
-  attr_accessor :layers_count, :places, :fields
+  attr_reader :layers_count, :places, :fields
 
   def initialize layers
-    raise Error if layers <= 0
+    raise BeyondRangeError if layers <= 0
     @layers_count = layers
     @places = prepare_places
     @fields = prepare_fields
@@ -15,8 +15,7 @@ class Map
     return nil if index.nil?
     return @places.first if index == :first
     return @places.last if index == :last
-    raise BeyondRangeError if index < 1
-    raise BeyondRangeError if index > 54
+    raise BeyondRangeError unless index.between?(1,54)
     @places[index-1]
   end
 
@@ -24,8 +23,7 @@ class Map
     return nil if index.nil?
     return @fields.first if index == :first
     return @fields.last if index == :last
-    raise BeyondRangeError if index < 1
-    raise BeyondRangeError if index > 19
+    raise BeyondRangeError unless index.between?(1,19)
     @fields[index-1]
   end
 

@@ -6,11 +6,11 @@ describe Catan do
   end
 
   it 'loads map' do
-    expect{ @app.send :map }.not_to raise_error
+    expect(@app).to respond_to(:map)
   end
 
   it 'loads players' do
-    expect{ @app.send :players }.not_to raise_error
+    expect(@app).to respond_to(:players)
   end
 
 end

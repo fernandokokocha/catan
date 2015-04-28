@@ -1,5 +1,5 @@
 class Place
-  attr_accessor :index, :layer, :side, :spot
+  attr_reader :index, :layer, :side, :spot
 
   def initialize index
     @index = index

@@ -44,12 +44,12 @@ class SetupGame
 
     return false if has_duplicates(player_names)
     return false if has_duplicates(player_colors)
-    return false if player_colors - legal_colors != []
+    return false if player_colors - valid_colors != []
 
     true
   end
 
-  def legal_colors
+  def valid_colors
     [:orange, :red, :white, :blue]
   end
 

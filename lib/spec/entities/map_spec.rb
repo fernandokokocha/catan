@@ -1,6 +1,8 @@
 require 'spec_helper'
 
 describe Map do
+  let(:valid_resources) { [:brick, :lumber, :wool, :grain, :ore] }
+
   it 'cannot take non-positive numbers of layers' do
     expect{ Map.new(0) }.to raise_error(Map::BeyondRangeError)
     expect{ Map.new(-1) }.to raise_error(Map::BeyondRangeError)
@@ -671,6 +673,22 @@ describe Map do
 
     it 'returns nil when try to get nil places of field' do
       expect(@map.get_places_of_field(nil)).to be_nil
+    end
+
+    it 'assigns a resource to every field' do
+      (1..@map.fields_count).each do |index|
+        expect(@map.get_field(index)).to respond_to(:resource)
+      end
+    end
+
+    it 'assigns desert to 1 field resource' do
+      expect(@map.get_field(:first).resource).to eq(:desert)
+    end
+
+    it 'assigns a valid resource to every field except first' do
+      (2..@map.fields_count).each do |index|
+        expect(valid_resources).to include(@map.get_field(index).resource)
+      end
     end
   end
 end

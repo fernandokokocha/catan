@@ -5,22 +5,34 @@ class SetupGame
 
   def invoke
     raise InvalidParameters unless valid?
-    map = Map.new(@request[:layers_count])
-
-    players = []
-    @request[:players].each do |player|
-      players << Player.new(player[:name],
-                            player[:color])
-    end
-    [map, players]
+    @map = setup_map
+    @players = setup_players
+    @order = setup_order
+    [@map, @players, @order]
   end
 
   class InvalidParameters < StandardError
   end
 
   private
+  def setup_map
+    Map.new(@request[:layers_count])
+  end
+
+  def setup_players
+    players = []
+    @request[:players].each do |player|
+      players << Player.new(player[:name],
+                            player[:color])
+    end
+    players
+  end
+
+  def setup_order
+    @players.shuffle
+  end
+
   def valid?
-    return false if @request.nil?
     return false unless @request.is_a?(Hash)
 
     return false unless @request.has_key?(:layers_count)

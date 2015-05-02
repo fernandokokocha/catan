@@ -1,8 +1,9 @@
 class Field
-  attr_reader :index, :resource
+  attr_reader :index, :resource, :number
 
-  def initialize index
+  def initialize index, resource, number
     @index = index
-    @resource = (index == 1) ? :desert : :ore
+    @resource = resource
+    @number = number
   end
 end

@@ -65,9 +65,39 @@ class Map
 
   def prepare_fields
     max = (1+6+12)
-    (1..max).map { |index| Field.new(index) }
+    resources = resources_base
+    numbers = numbers_base
+    fields = []
+    fields << Field.new(1, :desert, 7)
+    (2..max).each do |index|
+      r = resources.shuffle!.pop
+      n = numbers.shuffle!.pop
+      fields << Field.new(index, r, n)
+    end
+    fields
   end
-  
+
+  def numbers_base
+    Array.new(1, 2) +
+        Array.new(2, 3) +
+        Array.new(2, 4) +
+        Array.new(2, 5) +
+        Array.new(2, 6) +
+        Array.new(2, 8) +
+        Array.new(2, 9) +
+        Array.new(2, 10) +
+        Array.new(2, 11) +
+        Array.new(1, 12)
+  end
+
+  def resources_base
+    Array.new(3, :ore) +
+        Array.new(3, :brick) +
+        Array.new(4, :wool) +
+        Array.new(4, :grain) +
+        Array.new(4, :lumber)
+  end
+
   def get_neighbours_indexes index
     place = get_place(index)
     circuit = 6*(2*place.layer - 1)

@@ -353,20 +353,6 @@ describe Map do
       expect{ @map.get_neighbours(55) }.to raise_error(Map::BeyondRangeError)
     end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     it 'has proper number of fields' do
       expect(@map.fields_count).to eq(1 + 6 + 12)
     end
@@ -685,9 +671,60 @@ describe Map do
       expect(@map.get_field(:first).resource).to eq(:desert)
     end
 
-    it 'assigns a valid resource to every field except first' do
-      (2..@map.fields_count).each do |index|
-        expect(valid_resources).to include(@map.get_field(index).resource)
+    it 'has 3 ore fields' do
+      ore_fields = (1..@map.fields_count).each.select do |index|
+        @map.get_field(index).resource == :ore
+      end
+      expect(ore_fields.count).to eq(3)
+    end
+
+    it 'has 3 brick fields' do
+      brick_fields = (1..@map.fields_count).each.select do |index|
+        @map.get_field(index).resource == :brick
+      end
+      expect(brick_fields.count).to eq(3)
+    end
+
+    it 'has 4 wool fields' do
+      wool_fields = (1..@map.fields_count).each.select do |index|
+        @map.get_field(index).resource == :wool
+      end
+      expect(wool_fields.count).to eq(4)
+    end
+
+    it 'has 4 grain fields' do
+      grain_fields = (1..@map.fields_count).each.select do |index|
+        @map.get_field(index).resource == :grain
+      end
+      expect(grain_fields.count).to eq(4)
+    end
+
+    it 'has 4 lumber fields' do
+      lumber_fields = (1..@map.fields_count).each.select do |index|
+        @map.get_field(index).resource == :lumber
+      end
+      expect(lumber_fields.count).to eq(4)
+    end
+
+    it 'has first field with number 7' do
+      expect(@map.get_field(:first).number).to eq(7)
+    end
+
+    it 'has one field with numbers 2 and 12' do
+      [2,12].each do |number|
+        fields = (1..@map.fields_count).each.select do |index|
+          @map.get_field(index).number == number
+        end
+        expect(fields.count).to eq(1)
+      end
+    end
+
+    it 'has two fields with numbers 3,4,5,6,8,9,10,11' do
+      [3,4,5,6,8,9,10,11].each do |number|
+        fields = (1..@map.fields_count).each.select do |index|
+          @map.get_field(index).number == number
+        end
+        expect(fields.count).to eq(2)
       end
     end
   end

@@ -1,17 +1,13 @@
-class SetupGame
-  def initialize request
-    @request = request
-  end
+require_relative 'controller'
 
+class SetupGame < Controller
   def invoke
     raise InvalidParameters unless valid?
-    @map = setup_map
-    @players = setup_players
-    @order = setup_order
-    [@map, @players, @order]
-  end
-
-  class InvalidParameters < StandardError
+    @response = {}
+    @response[:map] = setup_map
+    @response[:players] = setup_players
+    @response[:order] = setup_order
+    @response
   end
 
   private
@@ -29,19 +25,21 @@ class SetupGame
   end
 
   def setup_order
-    @players.shuffle
+    @response[:players].shuffle
   end
 
   def valid?
     return false unless @request.is_a?(Hash)
 
     return false unless @request.has_key?(:layers_count)
-    return false if @request[:layers_count] <= 0
-
     return false unless @request.has_key?(:players)
-    return false unless @request[:players].is_a?(Array)
-    return false if @request[:players].empty?
 
+    layers_count = @request[:layers_count]
+    players = @request[:players]
+
+    return false if layers_count <= 0
+    return false unless players.is_a?(Array)
+    return false if players.empty?
     return false if has_duplicates(player_names)
     return false if has_duplicates(player_colors)
     return false if player_colors - valid_colors != []

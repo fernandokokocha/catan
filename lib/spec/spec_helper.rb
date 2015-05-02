@@ -1,3 +1,3 @@
 require_relative '../catan.rb'
-require_relative '../entities/map.rb'
-require_relative '../controllers/setup_game.rb'
+Dir['./entities/*.rb'].each{ |f| require f }
+Dir['./controllers/*.rb'].each{ |f| require f }

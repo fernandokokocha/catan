@@ -54,7 +54,22 @@ class Map
     @fields.count
   end
 
+  def settle index, player
+    raise SettleError unless can_settle? index
+    get_place(index).settle player
+  end
+
+  def can_settle? index
+    return false if get_place(index).settled_by
+    return false if get_neighbours(index).select { |place| place.settled_by }.any?
+
+    true
+  end
+
   class BeyondRangeError < StandardError
+  end
+
+  class SettleError < StandardError
   end
 
   private

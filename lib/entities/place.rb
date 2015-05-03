@@ -1,5 +1,5 @@
 class Place
-  attr_reader :index, :layer, :side, :spot
+  attr_reader :index, :layer, :side, :spot, :settled_by
 
   def initialize index
     @index = index
@@ -21,5 +21,9 @@ class Place
         @side = 1 + (base / 5)
         @spot = 1 + (base % 5)
     end
+  end
+
+  def settle player
+    @settled_by = player
   end
 end

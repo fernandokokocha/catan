@@ -3,6 +3,7 @@ require_relative 'controller'
 class RoadSettleForFree < Controller
   def invoke
     raise InvalidParameters unless valid?
+    @map.settle(@place, @current_player)
   end
   
   private
@@ -11,16 +12,21 @@ class RoadSettleForFree < Controller
     return false unless @request.has_key?(:map)
     return false unless @request.has_key?(:place)
     return false unless @request.has_key?(:neighbour)
+    return false unless @request.has_key?(:current_player)
 
-    map = @request[:map]
-    place = @request[:place]
-    neighbour = @request[:neighbour]
+    @map = @request[:map]
+    @place = @request[:place]
+    @neighbour = @request[:neighbour]
+    @current_player = @request[:current_player]
 
-    return false unless map.is_a?(Map)
-    return false unless place.is_a?(Fixnum)
-    map.get_place(place) rescue return false
-    map.get_place(neighbour) rescue return false
-    map.get_neighbours(place).include? map.get_place(neighbour) rescue return false
+    return false unless @map.is_a?(Map)
+    return false unless @place.is_a?(Fixnum)
+    return false unless @neighbour.is_a?(Fixnum)
+    return false unless @current_player.is_a?(Player)
+    @map.get_place(@place) rescue return false
+    @map.get_place(@neighbour) rescue return false
+    return false unless @map.get_neighbours(@place).include? @map.get_place(@neighbour)
+    return false unless @map.can_settle? @place
     
     true
   end

@@ -6,7 +6,7 @@ class SetupGame < Controller
     @response = {}
     @response[:map] = setup_map
     @response[:players] = setup_players
-    @response[:order] = setup_order
+    @response[:current_player] = setup_current_player
     @response
   end
 
@@ -24,8 +24,8 @@ class SetupGame < Controller
     players
   end
 
-  def setup_order
-    @response[:players].shuffle
+  def setup_current_player
+    @response[:players].sample
   end
 
   def valid?

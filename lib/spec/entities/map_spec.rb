@@ -52,7 +52,7 @@ describe Map do
       expect(@map.get_place(:last).index).to eq(@map.places_count)
     end
 
-    it 'return nil when try to get nil-place' do
+    it 'returns nil when try to get nil-place' do
       expect(@map.get_place(nil)).to be_nil
     end
 
@@ -726,6 +726,31 @@ describe Map do
         end
         expect(fields.count).to eq(2)
       end
+    end
+
+    it 'has every place unsettled' do
+      (1..@map.places_count).each do |index|
+        expect(@map.get_place(index).settled_by).to be_nil
+      end
+    end
+
+    it 'assigns player after settle' do
+      player = Player.new('Bartek', :orange)
+      @map.settle(1, player)
+      expect(@map.get_place(1).settled_by).to eq(player)
+    end
+
+    it 'fails when place already settled' do
+      player = Player.new('Bartek', :orange)
+      @map.settle(1, player)
+      expect{ @map.settle(1, player) }.to raise_error(Map::SettleError)
+    end
+
+    it 'fails when neighbour already settled' do
+      player = Player.new('Bartek', :orange)
+      @map.settle(1, player)
+      neighbour = @map.get_neighbours(1).sample.index
+      expect{ @map.settle(neighbour, player) }.to raise_error(Map::SettleError)
     end
   end
 end

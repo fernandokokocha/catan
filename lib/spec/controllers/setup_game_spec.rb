@@ -4,6 +4,8 @@ describe SetupGame do
   let(:valid_players) { [{:name => 'Bartek',
                           :color => :orange}] }
   let(:valid_layers_count) { 3 }
+  let(:valid_request) { {:players => valid_players,
+                         :layers_count => valid_layers_count} }
 
   it 'raises error if request is not a hash' do
     request = nil
@@ -11,98 +13,99 @@ describe SetupGame do
   end
 
   it 'requires layers_count' do
-    request = {:players => valid_players}
+    request = valid_request
+    request.delete(:layers_count)
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   it 'raises error if layers count is a zero' do
-    request = {:layers_count => 0}
+    request = valid_request
+    request[:layers_count] = 0
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   it 'raises error if layers count is a negative number' do
-    request = {:layers_count => -1}
+    request = valid_request
+    request[:layers_count] = -1
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   it 'requires players' do
-    request = {:layers_count => valid_layers_count}
+    request = valid_request
+    request.delete(:players)
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   it 'raises error if players is not an array' do
-    @players = 2
-    request = {:layers_count => valid_layers_count,
-               :players => @players}
+    request = valid_request
+    request[:players] = 2
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   it 'raises error if players is empty array' do
-    @players = []
-    request = {:layers_count => valid_layers_count,
-               :players => @players}
+    request = valid_request
+    request[:players] = []
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   it 'raises error if players have the same name' do
-    @players = []
-    @players << {:name => 'Bartek',
-                 :color => :orange}
-    @players << {:name => 'Bartek',
-                 :color => :red}
-    request = {:layers_count => valid_layers_count,
-               :players => @players}
+    players = []
+    players << {:name => 'Bartek',
+                :color => :orange}
+    players << {:name => 'Bartek',
+                :color => :red}
+    request = valid_request
+    request[:players] = players
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   it 'raises error if players have the same color' do
-    @players = []
-    @players << {:name => 'Bartek',
-                 :color => :orange}
-    @players << {:name => 'John',
-                 :color => :orange}
-    request = {:layers_count => valid_layers_count,
-               :players => @players}
+    players = []
+    players << {:name => 'Bartek',
+                :color => :orange}
+    players << {:name => 'John',
+                :color => :orange}
+    request = valid_request
+    request[:players] = players
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   it 'raises error if player has illegal color' do
-    @players = []
-    @players << {:name => 'Bartek',
-                 :color => :yellow}
-    request = {:layers_count => valid_layers_count,
-               :players => @players}
+    players = []
+    players << {:name => 'Bartek',
+                :color => :yellow}
+    request = valid_request
+    request[:players] = players
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   it 'raises error if more than 4 players' do
-    @players = []
-    @players << {:name => 'Bartek',
-                 :color => :orange}
-    @players << {:name => 'John',
-                 :color => :red}
-    @players << {:name => 'Mark',
-                 :color => :white}
-    @players << {:name => 'Wojtas',
-                 :color => :blue}
-    @players << {:name => 'Marcin',
-                 :color => :white}
-    request = {:layers_count => valid_layers_count,
-               :players => @players}
+    players = []
+    players << {:name => 'Bartek',
+                :color => :orange}
+    players << {:name => 'John',
+                :color => :red}
+    players << {:name => 'Mark',
+                :color => :white}
+    players << {:name => 'Wojtas',
+                :color => :blue}
+    players << {:name => 'Marcin',
+                :color => :white}
+    request = valid_request
+    request[:players] = players
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   describe 'when valid request' do
     before(:each) do
-      @request = {:layers_count => valid_layers_count,
-                  :players => valid_players}
+      @request = valid_request
       @response = SetupGame.new(@request).invoke
       @map = @response[:map]
       @players = @response[:players]
-      @order = @response[:order]
+      @current_player = @response[:current_player]
     end
 
-    it 'returns map as first element' do
+    it 'returns map' do
       expect(@map).to be_instance_of Map
     end
 
@@ -110,28 +113,19 @@ describe SetupGame do
       expect(@map.layers_count).to eq(valid_layers_count)
     end
 
-    it 'returns list of players as second element' do
+    it 'returns players' do
       expect(@players).not_to be_empty
       @players.each do |user|
         expect(user).to be_instance_of Player
       end
     end
 
-    it 'returns list of players as third element' do
-      expect(@order).not_to be_empty
-      @order.each do |user|
-        expect(user).to be_instance_of Player
-      end
+    it 'returns current_player player' do
+      expect(@current_player).to be_instance_of Player
     end
 
-    it 'returns order of players' do
-      @order.each do |user|
-        expect(@players).to include user
-      end
-    end
-
-    it 'returns order of uniq players' do
-      expect(@order).to eq(@order.uniq)
+    it 'returns current_player from players' do
+      expect(@players).to include @current_player
     end
 
     describe 'with one player' do
@@ -146,10 +140,6 @@ describe SetupGame do
       it 'sets player color' do
         expect(@players[0].color).to eq(valid_players[0][:color])
       end
-
-      it 'returns order of player' do
-        expect(@order).to eq(@players)
-      end
     end
 
     describe 'with two players' do
@@ -157,12 +147,12 @@ describe SetupGame do
         @valid_players = valid_players
         @valid_players << {:name => 'John',
                            :color => :red}
-        @request = {:layers_count => valid_layers_count,
-                    :players => @valid_players}
+        @request = valid_request
+        @request[:players] = @valid_players
         @response = SetupGame.new(@request).invoke
         @map = @response[:map]
         @players = @response[:players]
-        @order = @response[:order]
+        @current_player = @response[:order]
       end
 
       it 'returns two players' do
@@ -178,23 +168,6 @@ describe SetupGame do
         expect(@players[0].color).to eq(@valid_players[0][:color])
         expect(@players[1].color).to eq(@valid_players[1][:color])
       end
-
-      it 'returns list of players as third element' do
-        expect(@order).not_to be_empty
-        @order.each do |user|
-          expect(user).to be_instance_of Player
-        end
-      end
-
-      it 'returns order of players' do
-        @order.each do |user|
-          expect(@players).to include user
-        end
-      end
-
-      it 'returns order of uniq players' do
-        expect(@order).to eq(@order.uniq)
-      end
     end
 
     describe 'with four players' do
@@ -206,12 +179,12 @@ describe SetupGame do
                            :color => :white}
         @valid_players << {:name => 'Wojtas',
                            :color => :blue}
-        @request = {:layers_count => valid_layers_count,
-                    :players => @valid_players}
+        @request = valid_request
+        @request[:players] = @valid_players
         @response = SetupGame.new(@request).invoke
         @map = @response[:map]
         @players = @response[:players]
-        @order = @response[:order]
+        @current_player = @response[:order]
       end
 
       it 'returns four players' do
@@ -230,23 +203,6 @@ describe SetupGame do
         expect(@players[1].color).to eq(@valid_players[1][:color])
         expect(@players[2].color).to eq(@valid_players[2][:color])
         expect(@players[3].color).to eq(@valid_players[3][:color])
-      end
-
-      it 'returns list of players as third element' do
-        expect(@order).not_to be_empty
-        @order.each do |user|
-          expect(user).to be_instance_of Player
-        end
-      end
-
-      it 'returns order of players' do
-        @order.each do |user|
-          expect(@players).to include user
-        end
-      end
-
-      it 'returns order of uniq players' do
-        expect(@order).to eq(@order.uniq)
       end
     end
   end

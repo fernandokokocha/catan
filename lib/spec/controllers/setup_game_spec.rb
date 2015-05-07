@@ -7,8 +7,13 @@ describe SetupGame do
   let(:valid_request) { {:players => valid_players,
                          :layers_count => valid_layers_count} }
 
-  it 'raises error if request is not a hash' do
+  it 'raises error if request is nil' do
     request = nil
+    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+  end
+
+  it 'raises error if request is not a hash' do
+    request = []
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 

@@ -12,7 +12,7 @@ class SetupGame < Controller
 
   private
   def setup_map
-    Map.new(@request[:layers_count])
+    Map.new
   end
 
   def setup_players

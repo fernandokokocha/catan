@@ -4,9 +4,8 @@ require_relative 'field'
 class Map
   attr_reader :layers_count, :places, :fields
 
-  def initialize layers
-    raise BeyondRangeError if layers <= 0
-    @layers_count = layers
+  def initialize
+    @layers_count = 3
     @places = prepare_places
     @fields = prepare_fields
   end

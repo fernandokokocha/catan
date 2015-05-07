@@ -3,15 +3,20 @@ require 'spec_helper'
 describe RoadSettleForFree do
   let(:valid_place) { 1 }
   let(:valid_neighbour) { 2 }
-  let(:valid_map) { Map.new(3) }
+  let(:valid_map) { Map.new }
   let(:valid_current_player) { Player.new('Bartek', :orange) }
   let(:valid_request) { {:place => valid_place,
                          :neighbour => valid_neighbour,
                          :map => valid_map,
                          :current_player => valid_current_player} }
 
-  it 'raises error if request is not a hash' do
+  it 'raises error if request is nil' do
     request = nil
+    expect{ RoadSettleForFree.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+  end
+
+  it 'raises error if request is not a hash' do
+    request = []
     expect{ RoadSettleForFree.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 

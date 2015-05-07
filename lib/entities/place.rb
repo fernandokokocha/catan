@@ -1,8 +1,9 @@
 class Place
-  attr_reader :index, :layer, :side, :spot, :settled_by
+  attr_reader :index, :layer, :side, :spot, :settled_by, :roads
 
   def initialize index
     @index = index
+    @roads = []
 
     case index
       when(1..6)
@@ -25,5 +26,9 @@ class Place
 
   def settle player
     @settled_by = player
+  end
+
+  def add_road neighbour, player
+    @roads << [neighbour, player]
   end
 end

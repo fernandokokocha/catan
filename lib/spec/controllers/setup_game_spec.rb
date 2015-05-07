@@ -101,7 +101,7 @@ describe SetupGame do
     expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
-  describe 'when valid request' do
+  context 'when valid request' do
     before(:each) do
       @request = valid_request
       @response = SetupGame.new(@request).invoke
@@ -133,7 +133,7 @@ describe SetupGame do
       expect(@players).to include @current_player
     end
 
-    describe 'with one player' do
+    context 'with one player' do
       it 'return one player if specified' do
         expect(@players.length).to eq(1)
       end
@@ -147,7 +147,7 @@ describe SetupGame do
       end
     end
 
-    describe 'with two players' do
+    context 'with two players' do
       before (:each) do
         @valid_players = valid_players
         @valid_players << {:name => 'John',
@@ -175,7 +175,7 @@ describe SetupGame do
       end
     end
 
-    describe 'with four players' do
+    context 'with four players' do
       before (:each) do
         @valid_players = valid_players
         @valid_players << {:name => 'John',

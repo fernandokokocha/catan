@@ -54,7 +54,6 @@ class Map
   end
 
   def settle index, player
-    raise SettleError unless can_settle? index
     get_place(index).settle player
   end
 
@@ -65,10 +64,12 @@ class Map
     true
   end
 
-  class BeyondRangeError < StandardError
+  def build_road place, neighbour, player
+    get_place(place).add_road(neighbour, player)
+    get_place(neighbour).add_road(place, player)
   end
 
-  class SettleError < StandardError
+  class BeyondRangeError < StandardError
   end
 
   private

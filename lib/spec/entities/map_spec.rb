@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe Map do
+  let(:valid_player) { Player.new('Bartek', :orange) }
+  let(:valid_place) { 1 }
+  let(:valid_neighbour) { 2 }
+  let(:valid_place2) { 3 }
+  let(:valid_neighbour2) { 6 }
+  
   before (:each) do
     @map = Map.new
   end
@@ -715,22 +721,44 @@ describe Map do
     end
   end
 
+  it 'can settle every place' do
+    (1..@map.places_count).each do |index|
+      expect(@map.can_settle?(index)).to be(true)
+    end
+  end
+
   it 'assigns player after settle' do
-    player = Player.new('Bartek', :orange)
-    @map.settle(1, player)
-    expect(@map.get_place(1).settled_by).to eq(player)
+    @map.settle(valid_place, valid_player)
+    expect(@map.get_place(valid_place).settled_by).to eq(valid_player)
   end
 
-  it 'fails with assigns when place already settled' do
-    player = Player.new('Bartek', :orange)
-    @map.settle(1, player)
-    expect{ @map.settle(1, player) }.to raise_error(Map::SettleError)
+  it 'has every place with empty roads array' do
+    (1..@map.places_count).each do |index|
+      expect(@map.get_place(index).roads).to be_empty
+    end
   end
 
-  it 'fails with assigns when neighbour already settled' do
-    player = Player.new('Bartek', :orange)
-    @map.settle(1, player)
-    neighbour = @map.get_neighbours(1).sample.index
-    expect{ @map.settle(neighbour, player) }.to raise_error(Map::SettleError)
+  it 'assigns valid_player to place roads after build' do
+    @map.build_road(valid_place, valid_neighbour, valid_player)
+    expect(@map.get_place(valid_place).roads).to contain_exactly([valid_neighbour, valid_player])
+  end
+
+  it 'assigns valid_player to neighbour roads after build' do
+    @map.build_road(valid_place, valid_neighbour, valid_player)
+    expect(@map.get_place(valid_neighbour).roads).to contain_exactly([valid_place, valid_player])
+  end
+
+  it 'appends other roads' do
+    @map.build_road(valid_place, valid_neighbour, valid_player)
+    @map.build_road(valid_place, valid_neighbour2, valid_player)
+    expect(@map.get_place(valid_place).roads).to contain_exactly([valid_neighbour, valid_player],
+                                                                 [valid_neighbour2, valid_player])
+  end
+
+  it 'appends other roads for neighbour' do
+    @map.build_road(valid_place, valid_neighbour, valid_player)
+    @map.build_road(valid_place2, valid_neighbour, valid_player)
+    expect(@map.get_place(valid_neighbour).roads).to contain_exactly([valid_place, valid_player],
+                                                                     [valid_place2, valid_player])
   end
 end

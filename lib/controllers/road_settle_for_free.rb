@@ -4,6 +4,7 @@ class RoadSettleForFree < Controller
   def invoke
     raise InvalidParameters unless valid?
     @map.settle(@place, @current_player)
+    @map.build_road(@place, @neighbour, @current_player)
   end
   
   private

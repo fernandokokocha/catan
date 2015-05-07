@@ -134,5 +134,19 @@ describe RoadSettleForFree do
       RoadSettleForFree.new(request).invoke
       expect(request[:map].get_place(request[:place]).settled_by).to eq(request[:current_player])
     end
+
+    it 'builds road from place to neighbour' do
+      request = valid_request
+      RoadSettleForFree.new(request).invoke
+      expect(request[:map].get_place(request[:place]).roads).to contain_exactly([request[:neighbour],
+                                                                                 request[:current_player]])
+    end
+
+    it 'builds road from neighbour to place' do
+      request = valid_request
+      RoadSettleForFree.new(request).invoke
+      expect(request[:map].get_place(request[:neighbour]).roads).to contain_exactly([request[:place],
+                                                                                     request[:current_player]])
+    end
   end
 end

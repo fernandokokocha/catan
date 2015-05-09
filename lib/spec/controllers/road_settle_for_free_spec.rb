@@ -128,7 +128,7 @@ describe RoadSettleForFree do
     expect{ RoadSettleForFree.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
-  describe 'when valid request' do
+  context 'when valid request' do
     it 'settles place' do
       request = valid_request
       RoadSettleForFree.new(request).invoke

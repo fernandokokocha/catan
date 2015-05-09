@@ -7,6 +7,7 @@ class SetupGame < Controller
     @response[:map] = setup_map
     @response[:players] = setup_players
     @response[:current_player] = setup_current_player
+    @response[:turn] = 1
     @response
   end
 

@@ -21,8 +21,6 @@ class RoadSettleForFree < Controller
     @current_player = @request[:current_player]
 
     return false unless @map.is_a?(Map)
-    return false unless @place.is_a?(Fixnum)
-    return false unless @neighbour.is_a?(Fixnum)
     return false unless @current_player.is_a?(Player)
     @map.get_place(@place) rescue return false
     @map.get_place(@neighbour) rescue return false

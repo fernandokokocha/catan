@@ -108,6 +108,7 @@ describe SetupGame do
       @map = @response[:map]
       @players = @response[:players]
       @current_player = @response[:current_player]
+      @turn = @response[:turn]
     end
 
     it 'returns map' do
@@ -125,7 +126,7 @@ describe SetupGame do
       end
     end
 
-    it 'returns current_player player' do
+    it 'returns current_player as player' do
       expect(@current_player).to be_instance_of Player
     end
 
@@ -133,8 +134,12 @@ describe SetupGame do
       expect(@players).to include @current_player
     end
 
+    it 'returns first turn' do
+      expect(@turn).to eq(1)
+    end
+
     context 'with one player' do
-      it 'return one player if specified' do
+      it 'return one player' do
         expect(@players.length).to eq(1)
       end
 

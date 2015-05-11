@@ -1,8 +1,7 @@
 require_relative 'controller'
 
 class EndTurn < Controller
-  def invoke
-    raise InvalidParameters unless valid?
+  def execute
     index = @request[:players].index(@request[:current_player])
     len = @request[:players].length
     if @request[:turn].between?(len+1, 2*len-1)

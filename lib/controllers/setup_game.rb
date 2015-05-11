@@ -1,32 +1,13 @@
 require_relative 'controller'
 
 class SetupGame < Controller
-  def invoke
-    raise InvalidParameters unless valid?
+  def execute
     @response = {}
     @response[:map] = setup_map
     @response[:players] = setup_players
     @response[:current_player] = setup_current_player
     @response[:turn] = 1
     @response
-  end
-
-  private
-  def setup_map
-    Map.new
-  end
-
-  def setup_players
-    players = []
-    @request[:players].each do |player|
-      players << Player.new(player[:name],
-                            player[:color])
-    end
-    players
-  end
-
-  def setup_current_player
-    @response[:players].sample
   end
 
   def valid?
@@ -47,6 +28,25 @@ class SetupGame < Controller
 
     true
   end
+
+  private
+  def setup_map
+    Map.new
+  end
+
+  def setup_players
+    players = []
+    @request[:players].each do |player|
+      players << Player.new(player[:name],
+                            player[:color])
+    end
+    players
+  end
+
+  def setup_current_player
+    @response[:players].sample
+  end
+
 
   def valid_colors
     [:orange, :red, :white, :blue]

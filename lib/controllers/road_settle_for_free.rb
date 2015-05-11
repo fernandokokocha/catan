@@ -1,13 +1,11 @@
 require_relative 'controller'
 
 class RoadSettleForFree < Controller
-  def invoke
-    raise InvalidParameters unless valid?
+  def execute
     @map.settle(@place, @current_player)
     @map.build_road(@place, @neighbour, @current_player)
   end
-  
-  private
+
   def valid?
     return false unless @request.is_a?(Hash)
     return false unless @request.has_key?(:map)

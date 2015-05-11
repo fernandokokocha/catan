@@ -104,9 +104,191 @@ describe EndTurn do
   end
 
   context 'when valid request' do
-    it 'invokes' do
-      request = valid_request
-      expect{ EndTurn.new(request).invoke }.not_to raise_error
+    before(:each) do
+      @request = valid_request
+    end
+
+    it 'increments turns' do
+      EndTurn.new(@request).invoke
+      expect(@request[:turn]).to eq(valid_turn + 1)
+    end
+
+    context 'when 2 players' do
+      context 'when first turn' do
+        it 'makes second player current when first is current' do
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][1])
+        end
+
+        it 'makes first player current when second is current' do
+          @request[:current_player] = @request[:players][1]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][0])
+        end
+      end
+
+      context 'when second turn' do
+        before (:each) do
+          @request[:turn] = 2
+        end
+
+        it 'does not change current first player' do
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][0])
+        end
+
+        it 'does not change current second player' do
+          @request[:current_player] = @request[:players][1]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][1])
+        end
+      end
+
+      context 'when third turn' do
+        before (:each) do
+          @request[:turn] = 3
+        end
+
+        it 'makes second player current when first is current' do
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][1])
+        end
+
+        it 'makes first player current when second is current' do
+          @request[:current_player] = @request[:players][1]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][0])
+        end
+      end
+
+      context 'when fourth turn' do
+        before (:each) do
+          @request[:turn] = 4
+        end
+
+        it 'makes second player current when first is current' do
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][1])
+        end
+
+        it 'makes first player current when second is current' do
+          @request[:current_player] = @request[:players][1]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][0])
+        end
+      end
+    end
+
+    context 'when 3 players' do
+      before (:each) do
+        players = valid_players
+        players << Player.new('Spejson', :white)
+        @request[:players] = players
+      end
+
+      context 'when first turn' do
+        it 'makes third player current when second is current' do
+          @request[:current_player] = @request[:players][1]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][2])
+        end
+
+        it 'makes first player current when third is current' do
+          @request[:current_player] = @request[:players][2]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][0])
+        end
+      end
+
+      context 'when second turn' do
+        before (:each) do
+          @request[:turn] = 2
+        end
+
+        it 'makes second player current when first is current' do
+          @request[:current_player] = @request[:players][0]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][1])
+        end
+
+        it 'makes first player current when third is current' do
+          @request[:current_player] = @request[:players][2]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][0])
+        end
+      end
+
+      context 'when third turn' do
+        before (:each) do
+          @request[:turn] = 3
+        end
+
+        it 'does not change current first player' do
+          @request[:current_player] = @request[:players][0]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][0])
+        end
+
+        it 'does not change current second player' do
+          @request[:current_player] = @request[:players][1]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][1])
+        end
+
+        it 'does not change current third player' do
+          @request[:current_player] = @request[:players][2]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][2])
+        end
+      end
+
+      context 'when fourth turn' do
+        before (:each) do
+          @request[:turn] = 4
+        end
+
+        it 'makes third player current when first is current' do
+          @request[:current_player] = @request[:players][0]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][2])
+        end
+
+        it 'makes first player current when second is current' do
+          @request[:current_player] = @request[:players][1]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][0])
+        end
+
+        it 'makes second player current when third is current' do
+          @request[:current_player] = @request[:players][2]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][1])
+        end
+      end
+
+      context 'when 6th turn' do
+        before (:each) do
+          @request[:turn] = 6
+        end
+
+        it 'makes second player current when first is current' do
+          @request[:current_player] = @request[:players][0]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][1])
+        end
+
+        it 'makes third player current when second is current' do
+          @request[:current_player] = @request[:players][1]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][2])
+        end
+
+        it 'makes first player current when third is current' do
+          @request[:current_player] = @request[:players][2]
+          EndTurn.new(@request).invoke
+          expect(@request[:current_player]).to be(@request[:players][0])
+        end
+      end
     end
   end
 end

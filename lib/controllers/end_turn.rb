@@ -3,6 +3,14 @@ require_relative 'controller'
 class EndTurn < Controller
   def invoke
     raise InvalidParameters unless valid?
+    index = @request[:players].index(@request[:current_player])
+    len = @request[:players].length
+    if @request[:turn].between?(len+1, 2*len-1)
+      @request[:current_player] = @request[:players][(index - 1) % len]
+    elsif @request[:turn] != len
+      @request[:current_player] = @request[:players][(index + 1) % len]
+    end
+    @request[:turn] += 1
   end
   
   def valid?

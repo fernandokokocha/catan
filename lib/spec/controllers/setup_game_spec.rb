@@ -162,7 +162,7 @@ describe SetupGame do
         @response = SetupGame.new(@request).invoke
         @map = @response[:map]
         @players = @response[:players]
-        @current_player = @response[:order]
+        @current_player = @response[:current_player]
       end
 
       it 'returns two players' do
@@ -194,7 +194,7 @@ describe SetupGame do
         @response = SetupGame.new(@request).invoke
         @map = @response[:map]
         @players = @response[:players]
-        @current_player = @response[:order]
+        @current_player = @response[:current_player]
       end
 
       it 'returns four players' do

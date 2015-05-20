@@ -5,15 +5,19 @@ describe Catan do
     @app = Catan.new
   end
 
-  it 'loads map' do
+  it 'has map' do
     expect(@app).to respond_to(:map)
   end
 
-  it 'loads players' do
+  it 'has players' do
     expect(@app).to respond_to(:players)
   end
 
-  it 'loads order' do
-    expect(@app).to respond_to(:order)
+  it 'has current_player' do
+    expect(@app).to respond_to(:current_player)
+  end
+
+  it 'has turn' do
+    expect(@app).to respond_to(:turn)
   end
 end

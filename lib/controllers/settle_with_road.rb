@@ -1,6 +1,6 @@
 require_relative 'controller'
 
-class RoadSettleForFree < Controller
+class SettleWithRoad < Controller
   def execute
     @map.settle(@place, @current_player)
     @map.build_road(@place, @neighbour, @current_player)

@@ -2,7 +2,7 @@ require_relative 'place'
 require_relative 'field'
 
 class Map
-  attr_reader :layers_count, :places, :fields
+  attr_accessor :layers_count, :places, :fields
 
   def initialize
     @layers_count = 3

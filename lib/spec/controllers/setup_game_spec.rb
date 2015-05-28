@@ -150,6 +150,26 @@ describe SetupGame do
       it 'sets player color' do
         expect(@players[0].color).to eq(valid_players[0][:color])
       end
+
+      it 'sets player zero ore' do
+        expect(@players[0].resources[:ore]).to eq(0)
+      end
+
+      it 'sets player zero brick' do
+        expect(@players[0].resources[:brick]).to eq(0)
+      end
+
+      it 'sets player zero lumber' do
+        expect(@players[0].resources[:lumber]).to eq(0)
+      end
+
+      it 'sets player zero grain' do
+        expect(@players[0].resources[:grain]).to eq(0)
+      end
+
+      it 'sets player zero wool' do
+        expect(@players[0].resources[:wool]).to eq(0)
+      end
     end
 
     context 'with two players' do
@@ -177,6 +197,31 @@ describe SetupGame do
       it 'sets two players colors respectively' do
         expect(@players[0].color).to eq(@valid_players[0][:color])
         expect(@players[1].color).to eq(@valid_players[1][:color])
+      end
+
+      it 'sets both players zero ore' do
+        expect(@players[0].resources[:ore]).to eq(0)
+        expect(@players[1].resources[:ore]).to eq(0)
+      end
+
+      it 'sets both players zero brick' do
+        expect(@players[0].resources[:brick]).to eq(0)
+        expect(@players[1].resources[:brick]).to eq(0)
+      end
+
+      it 'sets both players zero lumber' do
+        expect(@players[0].resources[:lumber]).to eq(0)
+        expect(@players[1].resources[:lumber]).to eq(0)
+      end
+
+      it 'sets both players zero grain' do
+        expect(@players[0].resources[:grain]).to eq(0)
+        expect(@players[1].resources[:grain]).to eq(0)
+      end
+
+      it 'sets both players zero wool' do
+        expect(@players[0].resources[:wool]).to eq(0)
+        expect(@players[1].resources[:wool]).to eq(0)
       end
     end
 
@@ -213,6 +258,41 @@ describe SetupGame do
         expect(@players[1].color).to eq(@valid_players[1][:color])
         expect(@players[2].color).to eq(@valid_players[2][:color])
         expect(@players[3].color).to eq(@valid_players[3][:color])
+      end
+
+      it 'sets all players zero ore' do
+        expect(@players[0].resources[:ore]).to eq(0)
+        expect(@players[1].resources[:ore]).to eq(0)
+        expect(@players[2].resources[:ore]).to eq(0)
+        expect(@players[3].resources[:ore]).to eq(0)
+      end
+
+      it 'sets all players zero brick' do
+        expect(@players[0].resources[:brick]).to eq(0)
+        expect(@players[1].resources[:brick]).to eq(0)
+        expect(@players[2].resources[:brick]).to eq(0)
+        expect(@players[3].resources[:brick]).to eq(0)
+      end
+
+      it 'sets all players zero lumber' do
+        expect(@players[0].resources[:lumber]).to eq(0)
+        expect(@players[1].resources[:lumber]).to eq(0)
+        expect(@players[2].resources[:lumber]).to eq(0)
+        expect(@players[3].resources[:lumber]).to eq(0)
+      end
+
+      it 'sets all players zero grain' do
+        expect(@players[0].resources[:grain]).to eq(0)
+        expect(@players[1].resources[:grain]).to eq(0)
+        expect(@players[2].resources[:grain]).to eq(0)
+        expect(@players[3].resources[:grain]).to eq(0)
+      end
+
+      it 'sets all players zero wool' do
+        expect(@players[0].resources[:wool]).to eq(0)
+        expect(@players[1].resources[:wool]).to eq(0)
+        expect(@players[2].resources[:wool]).to eq(0)
+        expect(@players[3].resources[:wool]).to eq(0)
       end
     end
   end

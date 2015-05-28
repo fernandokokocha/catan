@@ -8,7 +8,8 @@ class Controller
     execute
   end
 
-  def vaild?
+  def valid?
+    true
   end
 
   def execute

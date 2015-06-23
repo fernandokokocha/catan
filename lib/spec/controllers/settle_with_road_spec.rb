@@ -95,7 +95,7 @@ describe SettleWithRoad do
   it 'fails when place is already taken' do
     player = Player.new('Player', :orange)
     map = valid_map
-    map.get_place(valid_place).settle(player)
+    map.place(valid_place).settle(player)
     request = valid_request
     request[:map] = map
     expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
@@ -104,7 +104,7 @@ describe SettleWithRoad do
   it 'fails when neighbour is already taken' do
     player = Player.new('Player', :orange)
     map = valid_map
-    map.get_place(valid_neighbour).settle(player)
+    map.place(valid_neighbour).settle(player)
     request = valid_request
     request[:map] = map
     expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
@@ -132,20 +132,20 @@ describe SettleWithRoad do
     it 'settles place' do
       request = valid_request
       SettleWithRoad.new(request).invoke
-      expect(request[:map].get_place(request[:place]).settled_by).to eq(request[:current_player])
+      expect(request[:map].place(request[:place]).settled_by).to eq(request[:current_player])
     end
 
     it 'builds road from place to neighbour' do
       request = valid_request
       SettleWithRoad.new(request).invoke
-      expect(request[:map].get_place(request[:place]).roads).to contain_exactly([request[:neighbour],
+      expect(request[:map].place(request[:place]).roads).to contain_exactly([request[:neighbour],
                                                                                  request[:current_player]])
     end
 
     it 'builds road from neighbour to place' do
       request = valid_request
       SettleWithRoad.new(request).invoke
-      expect(request[:map].get_place(request[:neighbour]).roads).to contain_exactly([request[:place],
+      expect(request[:map].place(request[:neighbour]).roads).to contain_exactly([request[:place],
                                                                                      request[:current_player]])
     end
   end

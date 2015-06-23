@@ -10,13 +10,13 @@ class Map
     @fields = initialize_fields
   end
 
-  def get_place index
+  def place index
     raise WrongIndexError unless index.is_a?(Numeric)
     raise WrongIndexError unless index.between?(1, @places.count)
     @places[index-1]
   end
 
-  def get_field index
+  def field index
     raise WrongIndexError unless index.is_a?(Numeric)
     raise WrongIndexError unless index.between?(1, @fields.count)
     @fields[index-1]
@@ -25,19 +25,19 @@ class Map
   def get_neighbours index
     raise WrongIndexError unless index.is_a?(Numeric)
     raise WrongIndexError unless index.between?(1, @places.count)
-    get_neighbours_indexes(index).map { |i| get_place(i) }
+    get_neighbours_indexes(index).map { |i| place(i) }
   end
 
   def get_fields_of_place index
     raise WrongIndexError unless index.is_a?(Numeric)
     raise WrongIndexError unless index.between?(1, @places.count)
-    get_fields_indexes_of_place(index).map { |i| get_field(i) }
+    get_fields_indexes_of_place(index).map { |i| field(i) }
   end
 
   def get_places_of_field index
     raise WrongIndexError unless index.is_a?(Numeric)
     raise WrongIndexError unless index.between?(1, @fields.count)
-    get_places_indexes_of_field(index).map { |i| get_place(i) }
+    get_places_indexes_of_field(index).map { |i| place(i) }
   end
 
   def places_count
@@ -48,20 +48,20 @@ class Map
     @fields.count
   end
 
-  def settle index, player
-    get_place(index).settle player
+  def settle_place index, player
+    place(index).settle player
   end
 
   def can_settle? index
-    return false if get_place(index).settled_by
+    return false if place(index).settled_by
     return false if get_neighbours(index).select { |place| place.settled_by }.any?
 
     true
   end
 
   def build_road place, neighbour, player
-    get_place(place).add_road(neighbour, player)
-    get_place(neighbour).add_road(place, player)
+    place(place).add_road(neighbour, player)
+    place(neighbour).add_road(place, player)
   end
 
   class WrongIndexError < StandardError
@@ -118,7 +118,7 @@ class Map
   end
 
   def get_neighbours_indexes index
-    place = get_place(index)
+    place = place(index)
     circuit = 6*(2*place.layer - 1)
     circuit_sum = 6*(place.layer * place.layer)
 
@@ -149,7 +149,7 @@ class Map
   end
 
   def get_fields_indexes_of_place(index)
-    place = get_place(index)
+    place = place(index)
 
     result = Array.new(3)
     base = place.layer < 3 ? 1 : 6
@@ -182,7 +182,7 @@ class Map
   end
 
   def get_places_indexes_of_field(index)
-    get_field(index)
+    field(index)
     (1..@places.count).select { |i| get_fields_indexes_of_place(i).include? index}
   end
 end

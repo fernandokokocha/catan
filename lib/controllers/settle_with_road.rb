@@ -2,7 +2,7 @@ require_relative 'controller'
 
 class SettleWithRoad < Controller
   def execute
-    @map.settle(@place, @current_player)
+    @map.settle_place(@place, @current_player)
     @map.build_road(@place, @neighbour, @current_player)
   end
 
@@ -20,9 +20,9 @@ class SettleWithRoad < Controller
 
     return false unless @map.is_a?(Map)
     return false unless @current_player.is_a?(Player)
-    @map.get_place(@place) rescue return false
-    @map.get_place(@neighbour) rescue return false
-    return false unless @map.get_neighbours(@place).include? @map.get_place(@neighbour)
+    @map.place(@place) rescue return false
+    @map.place(@neighbour) rescue return false
+    return false unless @map.get_neighbours(@place).include? @map.place(@neighbour)
     return false unless @map.can_settle? @place
     
     true

@@ -86,11 +86,7 @@ describe GainResourcesAroundCity do
       request = valid_request
       request[:map] = map
       GainResourcesAroundCity.new(request).invoke
-      expect(request[:current_player].resources[:lumber]).to eq(1)
-      expect(request[:current_player].resources[:ore]).to eq(1)
-      expect(request[:current_player].resources[:brick]).to eq(1)
-      expect(request[:current_player].resources[:grain]).to eq(0)
-      expect(request[:current_player].resources[:wool]).to eq(0)
+      expect_resources(request[:current_player], 1, 1, 1, 0, 0)
     end
 
     it 'gives player two resources if fields repeats' do
@@ -101,11 +97,7 @@ describe GainResourcesAroundCity do
       request = valid_request
       request[:map] = map
       GainResourcesAroundCity.new(request).invoke
-      expect(request[:current_player].resources[:lumber]).to eq(0)
-      expect(request[:current_player].resources[:ore]).to eq(1)
-      expect(request[:current_player].resources[:brick]).to eq(2)
-      expect(request[:current_player].resources[:grain]).to eq(0)
-      expect(request[:current_player].resources[:wool]).to eq(0)
+      expect_resources(request[:current_player], 0, 1, 2, 0, 0)
     end
 
     it 'gives player three resources if fields repeats' do
@@ -116,11 +108,7 @@ describe GainResourcesAroundCity do
       request = valid_request
       request[:map] = map
       GainResourcesAroundCity.new(request).invoke
-      expect(request[:current_player].resources[:lumber]).to eq(0)
-      expect(request[:current_player].resources[:ore]).to eq(0)
-      expect(request[:current_player].resources[:brick]).to eq(3)
-      expect(request[:current_player].resources[:grain]).to eq(0)
-      expect(request[:current_player].resources[:wool]).to eq(0)
+      expect_resources(request[:current_player], 0, 0, 3, 0, 0)
     end
 
     it 'ignores desert' do
@@ -131,11 +119,7 @@ describe GainResourcesAroundCity do
       request = valid_request
       request[:map] = map
       GainResourcesAroundCity.new(request).invoke
-      expect(request[:current_player].resources[:lumber]).to eq(0)
-      expect(request[:current_player].resources[:ore]).to eq(0)
-      expect(request[:current_player].resources[:brick]).to eq(1)
-      expect(request[:current_player].resources[:grain]).to eq(1)
-      expect(request[:current_player].resources[:wool]).to eq(0)
+      expect_resources(request[:current_player], 0, 0, 1, 1, 0)
     end
 
     it 'gives only two resources if place has two fields' do
@@ -146,11 +130,7 @@ describe GainResourcesAroundCity do
       request[:map] = map
       request[:place] = 27
       GainResourcesAroundCity.new(request).invoke
-      expect(request[:current_player].resources[:lumber]).to eq(0)
-      expect(request[:current_player].resources[:ore]).to eq(0)
-      expect(request[:current_player].resources[:brick]).to eq(0)
-      expect(request[:current_player].resources[:grain]).to eq(1)
-      expect(request[:current_player].resources[:wool]).to eq(1)
+      expect_resources(request[:current_player], 0, 0, 0, 1, 1)
     end
 
     it 'gives only one resource if place has two same fields' do
@@ -161,11 +141,7 @@ describe GainResourcesAroundCity do
       request[:map] = map
       request[:place] = 27
       GainResourcesAroundCity.new(request).invoke
-      expect(request[:current_player].resources[:lumber]).to eq(0)
-      expect(request[:current_player].resources[:ore]).to eq(0)
-      expect(request[:current_player].resources[:brick]).to eq(0)
-      expect(request[:current_player].resources[:grain]).to eq(0)
-      expect(request[:current_player].resources[:wool]).to eq(2)
+      expect_resources(request[:current_player], 0, 0, 0, 0, 2)
     end
 
     it 'gives only one resource if place has one field' do
@@ -175,11 +151,15 @@ describe GainResourcesAroundCity do
       request[:map] = map
       request[:place] = 26
       GainResourcesAroundCity.new(request).invoke
-      expect(request[:current_player].resources[:lumber]).to eq(1)
-      expect(request[:current_player].resources[:ore]).to eq(0)
-      expect(request[:current_player].resources[:brick]).to eq(0)
-      expect(request[:current_player].resources[:grain]).to eq(0)
-      expect(request[:current_player].resources[:wool]).to eq(0)
+      expect_resources(request[:current_player], 1, 0, 0, 0, 0)
     end
+  end
+
+  def expect_resources(player, lumber, ore, brick, grain, wool)
+    expect(player.resources[:lumber]).to eq(lumber)
+    expect(player.resources[:ore]).to eq(ore)
+    expect(player.resources[:brick]).to eq(brick)
+    expect(player.resources[:grain]).to eq(grain)
+    expect(player.resources[:wool]).to eq(wool)
   end
 end

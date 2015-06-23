@@ -31,28 +31,20 @@ describe Map do
     end
   end
 
-  it 'can access to first place' do
-    expect(@map.get_place(:first).index).to eq(1)
-  end
-
-  it 'can access to last place' do
-    expect(@map.get_place(:last).index).to eq(@map.places_count)
-  end
-
-  it 'returns nil when try to get nil-place' do
-    expect(@map.get_place(nil)).to be_nil
+  it 'fails when try to get nil-place' do
+    expect{ @map.get_place(nil) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'fails when try to get too low-numbered place' do
-    expect{ @map.get_place(0) }.to raise_error(Map::BeyondRangeError)
+    expect{ @map.get_place(0) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'fails when try to get too high-numbered place' do
-    expect{ @map.get_place(55) }.to raise_error(Map::BeyondRangeError)
+    expect{ @map.get_place(55) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'has first place in layer 1' do
-    expect(@map.get_place(:first).layer).to eq(1)
+    expect(@map.get_place(1).layer).to eq(1)
   end
 
   it 'has second place in layer 1' do
@@ -76,11 +68,11 @@ describe Map do
   end
 
   it 'has 54nd (last) place in layer 3' do
-    expect(@map.get_place(:last).layer).to eq(3)
+    expect(@map.get_place(54).layer).to eq(3)
   end
 
   it 'has first place in side 1' do
-    expect(@map.get_place(:first).side).to eq(1)
+    expect(@map.get_place(1).side).to eq(1)
   end
 
   it 'has second place in side 2' do
@@ -140,7 +132,7 @@ describe Map do
   end
 
   it 'has first place in spot 1' do
-    expect(@map.get_place(:first).spot).to eq(1)
+    expect(@map.get_place(1).spot).to eq(1)
   end
 
   it 'has second place in spot 1' do
@@ -196,7 +188,7 @@ describe Map do
   end
 
   it 'has last place in spot 5' do
-    expect(@map.get_place(:last).spot).to eq(5)
+    expect(@map.get_place(54).spot).to eq(5)
   end
 
   it 'knows that places 2, 6 and 24 are neighbours of place 1' do
@@ -332,12 +324,16 @@ describe Map do
                                                        @map.get_place(53))
   end
 
+  it 'fails when try to get neighbours of nil-place' do
+    expect{ @map.get_neighbours(nil) }.to raise_error(Map::WrongIndexError)
+  end
+
   it 'fails when try to get neighbours of too low-numbered place' do
-    expect{ @map.get_neighbours(0) }.to raise_error(Map::BeyondRangeError)
+    expect{ @map.get_neighbours(0) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'fails when try to get neighbours of too high-numbered place' do
-    expect{ @map.get_neighbours(55) }.to raise_error(Map::BeyondRangeError)
+    expect{ @map.get_neighbours(55) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'has proper number of fields' do
@@ -356,28 +352,16 @@ describe Map do
     end
   end
 
-  it 'can access to first field' do
-    expect(@map.get_field(:first).index).to eq(1)
-  end
-
-  it 'can access to last field' do
-    expect(@map.get_field(:last).index).to eq(@map.fields_count)
-  end
-
   it 'return nil when try to get nil-field' do
-    expect(@map.get_field(nil)).to be_nil
+    expect{ @map.get_field(nil) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'fails when try to get too low-numbered field' do
-    expect{ @map.get_field(0) }.to raise_error(Map::BeyondRangeError)
+    expect{ @map.get_field(0) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'fails when try to get too high-numbered field' do
-    expect{ @map.get_field(20) }.to raise_error(Map::BeyondRangeError)
-  end
-
-  it 'returns nil when try to get nil field' do
-    expect(@map.get_field(nil)).to be_nil
+    expect{ @map.get_field(20) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'knows that fields 1, 2 and 7 are nearby place 1' do
@@ -571,15 +555,15 @@ describe Map do
   end
 
   it 'fails when try to get too low-numbered fields of place' do
-    expect{ @map.get_fields_of_place(0) }.to raise_error(Map::BeyondRangeError)
+    expect{ @map.get_fields_of_place(0) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'fails when try to get too high-numbered fields of place' do
-    expect{ @map.get_fields_of_place(55) }.to raise_error(Map::BeyondRangeError)
+    expect{ @map.get_fields_of_place(55) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'returns nil when try to get nil fields of place' do
-    expect(@map.get_fields_of_place(nil)).to be_nil
+    expect{ @map.get_fields_of_place(nil) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'knows that places 1, 2, 3, 4, 5 and 6 are nearby field 1' do
@@ -637,15 +621,15 @@ describe Map do
   end
 
   it 'fails when try to get too low-numbered places of field' do
-    expect{ @map.get_places_of_field(0) }.to raise_error(Map::BeyondRangeError)
+    expect{ @map.get_places_of_field(0) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'fails when try to get too high-numbered places of field' do
-    expect{ @map.get_places_of_field(20) }.to raise_error(Map::BeyondRangeError)
+    expect{ @map.get_places_of_field(20) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'returns nil when try to get nil places of field' do
-    expect(@map.get_places_of_field(nil)).to be_nil
+    expect{ @map.get_places_of_field(nil) }.to raise_error(Map::WrongIndexError)
   end
 
   it 'assigns a resource to every field' do
@@ -655,7 +639,7 @@ describe Map do
   end
 
   it 'assigns desert to 1 field resource' do
-    expect(@map.get_field(:first).resource).to eq(:desert)
+    expect(@map.get_field(1).resource).to eq(:desert)
   end
 
   it 'has 3 ore fields' do
@@ -694,7 +678,7 @@ describe Map do
   end
 
   it 'has first field with number 7' do
-    expect(@map.get_field(:first).number).to eq(7)
+    expect(@map.get_field(1).number).to eq(7)
   end
 
   it 'has one field with numbers 2 and 12' do

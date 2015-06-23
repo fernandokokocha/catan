@@ -6,43 +6,38 @@ class Map
 
   def initialize
     @layers_count = 3
-    @places = prepare_places
-    @fields = prepare_fields
+    @places = initialize_places
+    @fields = initialize_fields
   end
 
   def get_place index
-    return nil if index.nil?
-    return @places.first if index == :first
-    return @places.last if index == :last
-    raise BeyondRangeError unless index.between?(1,54)
+    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.between?(1, @places.count)
     @places[index-1]
   end
 
   def get_field index
-    return nil if index.nil?
-    return @fields.first if index == :first
-    return @fields.last if index == :last
-    raise BeyondRangeError unless index.between?(1,19)
+    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.between?(1, @fields.count)
     @fields[index-1]
   end
 
   def get_neighbours index
-    return nil if index.nil?
+    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.between?(1, @places.count)
     get_neighbours_indexes(index).map { |i| get_place(i) }
   end
 
   def get_fields_of_place index
-    return nil if index.nil?
+    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.between?(1, @places.count)
     get_fields_indexes_of_place(index).map { |i| get_field(i) }
   end
 
   def get_places_of_field index
-    return nil if index.nil?
+    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.between?(1, @fields.count)
     get_places_indexes_of_field(index).map { |i| get_place(i) }
-  end
-
-  def layers_count
-    @layers_count
   end
 
   def places_count
@@ -69,19 +64,20 @@ class Map
     get_place(neighbour).add_road(place, player)
   end
 
-  class BeyondRangeError < StandardError
+  class WrongIndexError < StandardError
   end
 
   private
-  def prepare_places
-    max = (@layers_count * @layers_count * 6)
+  def initialize_places
+    max = max_place_index
     (1..max).map { |index| Place.new(index) }
   end
 
-  def prepare_fields
-    max = (1+6+12)
-    resources = resources_base
-    numbers = numbers_base
+
+  def initialize_fields
+    max = max_field_index
+    resources = resources_dist
+    numbers = numbers_dist
     fields = []
     fields << Field.new(1, :desert, 7)
     (2..max).each do |index|
@@ -92,7 +88,15 @@ class Map
     fields
   end
 
-  def numbers_base
+  def max_field_index
+    (1+6+12)
+  end
+
+  def max_place_index
+    @layers_count * @layers_count * 6
+  end
+
+  def numbers_dist
     Array.new(1, 2) +
         Array.new(2, 3) +
         Array.new(2, 4) +
@@ -105,7 +109,7 @@ class Map
         Array.new(1, 12)
   end
 
-  def resources_base
+  def resources_dist
     Array.new(3, :ore) +
         Array.new(3, :brick) +
         Array.new(4, :wool) +
@@ -179,6 +183,6 @@ class Map
 
   def get_places_indexes_of_field(index)
     get_field(index)
-    (1..54).select { |i| get_fields_indexes_of_place(i).include? index}
+    (1..@places.count).select { |i| get_fields_indexes_of_place(i).include? index}
   end
 end

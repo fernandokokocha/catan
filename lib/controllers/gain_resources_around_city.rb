@@ -19,7 +19,7 @@ class GainResourcesAroundCity < Controller
     @current_player = @request[:current_player]
 
     return false unless @map.is_a?(Map)
-    return false unless @place.is_a?(Fixnum)
+    return false unless @place.is_a?(Integer)
     return false unless @current_player.is_a?(Player)
 
     true

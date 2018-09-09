@@ -11,7 +11,7 @@ class EndTurn < Controller
     end
     @request[:turn] += 1
   end
-  
+
   def valid?
     return false if @request.nil?
     return false unless @request.is_a?(Hash)
@@ -19,7 +19,7 @@ class EndTurn < Controller
     return false unless @request.has_key?(:players)
     return false unless @request.has_key?(:current_player)
 
-    return false unless @request[:turn].is_a?(Fixnum)
+    return false unless @request[:turn].is_a?(Integer)
     return false unless @request[:players].is_a?(Array)
     return false if @request[:players].empty?
     @request[:players].each do |player|

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe Catan do
   before (:each) do
     @app = Catan.new

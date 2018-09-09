@@ -1,2 +1,3 @@
 --color
 --default-path lib/spec
+--require ./lib/spec/spec_helper

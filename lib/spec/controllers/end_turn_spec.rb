@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe EndTurn do
   let(:valid_turn) { 1 }
   let(:valid_current_player) { Player.new('Bartek', :orange) }

@@ -1,10 +1,8 @@
-require 'spec_helper'
-
 describe Player do
   it 'has resources' do
     expect{ Player.new('Player', :blue).resources }.not_to raise_error
   end
-  
+
   it 'has ore resources' do
     expect{ Player.new('Player', :blue).resources[:ore] }.not_to raise_error
   end

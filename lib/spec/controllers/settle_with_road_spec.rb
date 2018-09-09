@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe SettleWithRoad do
   let(:valid_place) { 1 }
   let(:valid_neighbour) { 2 }

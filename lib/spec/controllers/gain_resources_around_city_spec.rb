@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe GainResourcesAroundCity do
   let(:valid_current_player) { Player.new('Bartek', :orange) }
   let(:valid_place) { 8 }

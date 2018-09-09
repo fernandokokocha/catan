@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe SetupGame do
   let(:valid_players) { [{:name => 'Bartek',
                           :color => :orange}] }

@@ -1,12 +1,10 @@
-require 'spec_helper'
-
 describe Map do
   let(:valid_player) { Player.new('Bartek', :orange) }
   let(:valid_place) { 1 }
   let(:valid_neighbour) { 2 }
   let(:valid_place2) { 3 }
   let(:valid_neighbour2) { 6 }
-  
+
   before (:each) do
     @map = Map.new
   end

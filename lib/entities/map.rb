@@ -48,31 +48,31 @@ class Map
   end
 
   def place index
-    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @places.count)
     @places[index-1]
   end
 
   def field index
-    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @fields.count)
     @fields[index-1]
   end
 
   def get_neighbours index
-    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @places.count)
     get_neighbours_indexes(index).map { |i| place(i) }
   end
 
   def get_fields_of_place index
-    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @places.count)
     get_fields_indexes_of_place(index).map { |i| field(i) }
   end
 
   def get_places_of_field index
-    raise WrongIndexError unless index.is_a?(Numeric)
+    raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @fields.count)
     get_places_indexes_of_field(index).map { |i| place(i) }
   end

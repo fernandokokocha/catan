@@ -7,7 +7,6 @@ describe Player do
     expect{ @player.resources }.not_to raise_error
   end
 
-  RESOURCE_NAMES = [:ore, :lumber, :wool, :brick, :grain]
   RESOURCE_NAMES.each do |resource_name|
     it "has #{resource_name} resource" do
       expect(@player.resources[resource_name]).not_to be_nil

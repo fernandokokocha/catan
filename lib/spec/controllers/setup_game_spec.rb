@@ -1,102 +1,99 @@
 describe SetupGame do
-  let(:valid_players) { [{:name => 'Bartek',
-                          :color => :orange}] }
-  let(:valid_layers_count) { 3 }
-  let(:valid_request) { {:players => valid_players,
-                         :layers_count => valid_layers_count} }
+  let(:valid_player) { {name: 'Bartek', color: :orange} }
+  let(:valid_players) { [valid_player] }
+  let(:valid_request) { {players: valid_players} }
 
   it 'raises error if request is nil' do
     request = nil
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SetupGame.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Params is not a hash'
+    )
   end
 
   it 'raises error if request is not a hash' do
     request = []
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
-  end
-
-  it 'requires layers_count' do
-    request = valid_request
-    request.delete(:layers_count)
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
-  end
-
-  it 'raises error if layers count is a zero' do
-    request = valid_request
-    request[:layers_count] = 0
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
-  end
-
-  it 'raises error if layers count is a negative number' do
-    request = valid_request
-    request[:layers_count] = -1
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SetupGame.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Params is not a hash'
+    )
   end
 
   it 'requires players' do
     request = valid_request
     request.delete(:players)
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SetupGame.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Missing :players key in params'
+    )
   end
 
   it 'raises error if players is not an array' do
     request = valid_request
     request[:players] = 2
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SetupGame.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':players key is not an array'
+    )
   end
 
   it 'raises error if players is empty array' do
     request = valid_request
     request[:players] = []
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SetupGame.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ":players key is empty"
+    )
   end
 
   it 'raises error if players have the same name' do
     players = []
-    players << {:name => 'Bartek',
-                :color => :orange}
-    players << {:name => 'Bartek',
-                :color => :red}
+    players << {:name => 'Bartek', :color => :orange}
+    players << {:name => 'Bartek', :color => :red}
     request = valid_request
     request[:players] = players
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SetupGame.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Non-unique player names'
+    )
   end
 
   it 'raises error if players have the same color' do
     players = []
-    players << {:name => 'Bartek',
-                :color => :orange}
-    players << {:name => 'John',
-                :color => :orange}
+    players << {:name => 'Bartek', :color => :orange}
+    players << {:name => 'John', :color => :orange}
     request = valid_request
     request[:players] = players
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SetupGame.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Non-unique player colors'
+    )
   end
 
   it 'raises error if player has illegal color' do
     players = []
-    players << {:name => 'Bartek',
-                :color => :yellow}
+    players << {:name => 'Bartek',:color => :yellow}
     request = valid_request
     request[:players] = players
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SetupGame.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Illegal color'
+    )
   end
 
   it 'raises error if more than 4 players' do
     players = []
-    players << {:name => 'Bartek',
-                :color => :orange}
-    players << {:name => 'John',
-                :color => :red}
-    players << {:name => 'Mark',
-                :color => :white}
-    players << {:name => 'Wojtas',
-                :color => :blue}
-    players << {:name => 'Marcin',
-                :color => :white}
+    players << {:name => 'Bartek', :color => :orange}
+    players << {:name => 'John', :color => :red}
+    players << {:name => 'Mark', :color => :white}
+    players << {:name => 'Wojtas', :color => :blue}
+    players << {:name => 'Marcin', :color => :green}
     request = valid_request
     request[:players] = players
-    expect{ SetupGame.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SetupGame.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Illegal color'
+    )
   end
 
   context 'when valid request' do
@@ -113,8 +110,8 @@ describe SetupGame do
       expect(@map).to be_instance_of Map
     end
 
-    it 'returns map with as many layers as specified' do
-      expect(@map.layers_count).to eq(valid_layers_count)
+    it 'returns map with 3 layers' do
+      expect(@map.layers_count).to eq(3)
     end
 
     it 'returns players' do
@@ -149,89 +146,20 @@ describe SetupGame do
         expect(@players[0].color).to eq(valid_players[0][:color])
       end
 
-      it 'sets player zero ore' do
-        expect(@players[0].resources[:ore]).to eq(0)
+      RESOURCE_NAMES.each do |resource_name|
+        it "sets player zero #{resource_name}" do
+          expect(@players[0].resources[resource_name]).to eq(0)
+        end
       end
 
-      it 'sets player zero brick' do
-        expect(@players[0].resources[:brick]).to eq(0)
-      end
-
-      it 'sets player zero lumber' do
-        expect(@players[0].resources[:lumber]).to eq(0)
-      end
-
-      it 'sets player zero grain' do
-        expect(@players[0].resources[:grain]).to eq(0)
-      end
-
-      it 'sets player zero wool' do
-        expect(@players[0].resources[:wool]).to eq(0)
-      end
-    end
-
-    context 'with two players' do
-      before (:each) do
-        @valid_players = valid_players
-        @valid_players << {:name => 'John',
-                           :color => :red}
-        @request = valid_request
-        @request[:players] = @valid_players
-        @response = SetupGame.new(@request).invoke
-        @map = @response[:map]
-        @players = @response[:players]
-        @current_player = @response[:current_player]
-      end
-
-      it 'returns two players' do
-        expect(@players.length).to eq(2)
-      end
-
-      it 'sets two players names respectively' do
-        expect(@players[0].name).to eq(@valid_players[0][:name])
-        expect(@players[1].name).to eq(@valid_players[1][:name])
-      end
-
-      it 'sets two players colors respectively' do
-        expect(@players[0].color).to eq(@valid_players[0][:color])
-        expect(@players[1].color).to eq(@valid_players[1][:color])
-      end
-
-      it 'sets both players zero ore' do
-        expect(@players[0].resources[:ore]).to eq(0)
-        expect(@players[1].resources[:ore]).to eq(0)
-      end
-
-      it 'sets both players zero brick' do
-        expect(@players[0].resources[:brick]).to eq(0)
-        expect(@players[1].resources[:brick]).to eq(0)
-      end
-
-      it 'sets both players zero lumber' do
-        expect(@players[0].resources[:lumber]).to eq(0)
-        expect(@players[1].resources[:lumber]).to eq(0)
-      end
-
-      it 'sets both players zero grain' do
-        expect(@players[0].resources[:grain]).to eq(0)
-        expect(@players[1].resources[:grain]).to eq(0)
-      end
-
-      it 'sets both players zero wool' do
-        expect(@players[0].resources[:wool]).to eq(0)
-        expect(@players[1].resources[:wool]).to eq(0)
-      end
     end
 
     context 'with four players' do
       before (:each) do
         @valid_players = valid_players
-        @valid_players << {:name => 'John',
-                           :color => :red}
-        @valid_players << {:name => 'Mark',
-                           :color => :white}
-        @valid_players << {:name => 'Wojtas',
-                           :color => :blue}
+        @valid_players << {:name => 'John', :color => :red}
+        @valid_players << {:name => 'Mark', :color => :white}
+        @valid_players << {:name => 'Wojtas', :color => :blue}
         @request = valid_request
         @request[:players] = @valid_players
         @response = SetupGame.new(@request).invoke
@@ -244,53 +172,24 @@ describe SetupGame do
         expect(@players.length).to eq(4)
       end
 
-      it 'sets four players names respectively' do
-        expect(@players[0].name).to eq(@valid_players[0][:name])
-        expect(@players[1].name).to eq(@valid_players[1][:name])
-        expect(@players[2].name).to eq(@valid_players[2][:name])
-        expect(@players[3].name).to eq(@valid_players[3][:name])
+      it 'sets each players thier names respectively' do
+        (0..3).each do |index|
+          expect(@players[index].name).to eq(@valid_players[index][:name])
+        end
       end
 
-      it 'sets four players colors respectively' do
-        expect(@players[0].color).to eq(@valid_players[0][:color])
-        expect(@players[1].color).to eq(@valid_players[1][:color])
-        expect(@players[2].color).to eq(@valid_players[2][:color])
-        expect(@players[3].color).to eq(@valid_players[3][:color])
+      it 'sets each players thier colors respectively' do
+        (0..3).each do |index|
+          expect(@players[index].color).to eq(@valid_players[index][:color])
+        end
       end
 
-      it 'sets all players zero ore' do
-        expect(@players[0].resources[:ore]).to eq(0)
-        expect(@players[1].resources[:ore]).to eq(0)
-        expect(@players[2].resources[:ore]).to eq(0)
-        expect(@players[3].resources[:ore]).to eq(0)
-      end
-
-      it 'sets all players zero brick' do
-        expect(@players[0].resources[:brick]).to eq(0)
-        expect(@players[1].resources[:brick]).to eq(0)
-        expect(@players[2].resources[:brick]).to eq(0)
-        expect(@players[3].resources[:brick]).to eq(0)
-      end
-
-      it 'sets all players zero lumber' do
-        expect(@players[0].resources[:lumber]).to eq(0)
-        expect(@players[1].resources[:lumber]).to eq(0)
-        expect(@players[2].resources[:lumber]).to eq(0)
-        expect(@players[3].resources[:lumber]).to eq(0)
-      end
-
-      it 'sets all players zero grain' do
-        expect(@players[0].resources[:grain]).to eq(0)
-        expect(@players[1].resources[:grain]).to eq(0)
-        expect(@players[2].resources[:grain]).to eq(0)
-        expect(@players[3].resources[:grain]).to eq(0)
-      end
-
-      it 'sets all players zero wool' do
-        expect(@players[0].resources[:wool]).to eq(0)
-        expect(@players[1].resources[:wool]).to eq(0)
-        expect(@players[2].resources[:wool]).to eq(0)
-        expect(@players[3].resources[:wool]).to eq(0)
+      RESOURCE_NAMES.each do |resource_name|
+        it "sets each player zero #{resource_name}" do
+          (0..3).each do |index|
+            expect(@players[index].resources[resource_name]).to eq(0)
+          end
+        end
       end
     end
   end

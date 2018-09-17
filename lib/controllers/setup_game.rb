@@ -1,6 +1,15 @@
 require_relative 'controller'
 
 class SetupGame < Controller
+  def invoke
+    error = validate
+    if error
+      raise InvalidParameters.new(error)
+    else
+      execute
+    end
+  end
+
   def execute
     @response = {}
     @response[:map] = setup_map
@@ -10,23 +19,19 @@ class SetupGame < Controller
     @response
   end
 
-  def valid?
-    return false unless @request.is_a?(Hash)
+  def validate
+    return 'Params is not a hash' unless @request.is_a?(Hash)
+    return 'Missing :players key in params' unless @request.has_key?(:players)
 
-    return false unless @request.has_key?(:layers_count)
-    return false unless @request.has_key?(:players)
-
-    layers_count = @request[:layers_count]
     players = @request[:players]
 
-    return false if layers_count <= 0
-    return false unless players.is_a?(Array)
-    return false if players.empty?
-    return false if has_duplicates(player_names)
-    return false if has_duplicates(player_colors)
-    return false if player_colors - valid_colors != []
+    return ':players key is not an array' unless players.is_a?(Array)
+    return ":players key is empty" if players.empty?
+    return 'Non-unique player names' if has_duplicates(player_names)
+    return 'Non-unique player colors' if has_duplicates(player_colors)
+    return 'Illegal color' if player_colors - valid_colors != []
 
-    true
+    nil
   end
 
   private

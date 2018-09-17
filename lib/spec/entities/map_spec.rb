@@ -42,157 +42,76 @@ describe Map do
       expect{ @map.place(55) }.to raise_error(Map::WrongIndexError)
     end
 
-    it 'has first place in layer 1' do
-      expect(@map.place(1).layer).to eq(1)
+    describe 'layers' do
+      def self.expect_place_in_layer(place_index, layer_number)
+        it "has place no. #{place_index} in layer #{layer_number}" do
+          expect(@map.place(place_index).layer).to eq(layer_number)
+        end
+      end
+
+      expect_place_in_layer(1, 1)
+      expect_place_in_layer(2, 1)
+      expect_place_in_layer(6, 1)
+      expect_place_in_layer(7, 2)
+      expect_place_in_layer(24, 2)
+      expect_place_in_layer(25, 3)
+      expect_place_in_layer(54, 3)
     end
 
-    it 'has second place in layer 1' do
-      expect(@map.place(2).layer).to eq(1)
+    describe 'sides' do
+      def self.expect_place_in_side(place_index, side_number)
+        it "has place no. #{place_index} in side #{side_number}" do
+          expect(@map.place(place_index).side).to eq(side_number)
+        end
+      end
+
+      expect_place_in_side(1, 1)
+      expect_place_in_side(2, 2)
+      expect_place_in_side(6, 6)
+      expect_place_in_side(7, 1)
+      expect_place_in_side(8, 1)
+      expect_place_in_side(9, 1)
+      expect_place_in_side(10, 2)
+      expect_place_in_side(12, 2)
+      expect_place_in_side(13, 3)
+      expect_place_in_side(24, 6)
+      expect_place_in_side(25, 1)
+      expect_place_in_side(29, 1)
+      expect_place_in_side(30, 2)
+      expect_place_in_side(34, 2)
+      expect_place_in_side(35, 3)
     end
 
-    it 'has 6th place in layer 2' do
-      expect(@map.place(6).layer).to eq(1)
+    describe 'spots' do
+      def self.expect_place_in_spot(place_index, spot_number)
+        it "has place no. #{place_index} in spot #{spot_number}" do
+          expect(@map.place(place_index).spot).to eq(spot_number)
+        end
+      end
+
+      expect_place_in_spot(1, 1)
+      expect_place_in_spot(1, 1)
+      expect_place_in_spot(7, 1)
+      expect_place_in_spot(8, 2)
+      expect_place_in_spot(9, 3)
+      expect_place_in_spot(10, 1)
+      expect_place_in_spot(13, 1)
+      expect_place_in_spot(24, 3)
+      expect_place_in_spot(25, 1)
+      expect_place_in_spot(28, 4)
+      expect_place_in_spot(29, 5)
+      expect_place_in_spot(30, 1)
+      expect_place_in_spot(34, 5)
+      expect_place_in_spot(35, 1)
+      expect_place_in_spot(54, 5)
     end
 
-    it 'has 7th place in layer 2' do
-      expect(@map.place(7).layer).to eq(2)
-    end
 
-    it 'has 24th place in layer 2' do
-      expect(@map.place(24).layer).to eq(2)
-    end
-
-    it 'has 25th place in layer 3' do
-      expect(@map.place(25).layer).to eq(3)
-    end
-
-    it 'has 54nd (last) place in layer 3' do
-      expect(@map.place(54).layer).to eq(3)
-    end
-
-    it 'has first place in side 1' do
-      expect(@map.place(1).side).to eq(1)
-    end
-
-    it 'has second place in side 2' do
-      expect(@map.place(2).side).to eq(2)
-    end
-
-    it 'has 6th place in side 6' do
-      expect(@map.place(6).side).to eq(6)
-    end
-
-    it 'has 7th place in side 1' do
-      expect(@map.place(7).side).to eq(1)
-    end
-
-    it 'has 8th place in side 1' do
-      expect(@map.place(8).side).to eq(1)
-    end
-
-    it 'has 9th place in side 1' do
-      expect(@map.place(9).side).to eq(1)
-    end
-
-    it 'has 10th place in side 2' do
-      expect(@map.place(10).side).to eq(2)
-    end
-
-    it 'has 12th place in side 2' do
-      expect(@map.place(12).side).to eq(2)
-    end
-
-    it 'has 13th place in side 3' do
-      expect(@map.place(13).side).to eq(3)
-    end
-
-    it 'has 24th place in side 6' do
-      expect(@map.place(24).side).to eq(6)
-    end
-
-    it 'has 25th place in side 1' do
-      expect(@map.place(25).side).to eq(1)
-    end
-
-    it 'has 29th place in side 1' do
-      expect(@map.place(29).side).to eq(1)
-    end
-
-    it 'has 30th place in side 2' do
-      expect(@map.place(30).side).to eq(2)
-    end
-
-    it 'has 34th place in side 2' do
-      expect(@map.place(34).side).to eq(2)
-    end
-
-    it 'has 35th place in side 3' do
-      expect(@map.place(35).side).to eq(3)
-    end
-
-    it 'has first place in spot 1' do
-      expect(@map.place(1).spot).to eq(1)
-    end
-
-    it 'has second place in spot 1' do
-      expect(@map.place(2).spot).to eq(1)
-    end
-
-    it 'has 7th place in spot 1' do
-      expect(@map.place(7).spot).to eq(1)
-    end
-
-    it 'has 8th place in spot 2' do
-      expect(@map.place(8).spot).to eq(2)
-    end
-
-    it 'has 9th place in spot 3' do
-      expect(@map.place(9).spot).to eq(3)
-    end
-
-    it 'has 10th place in spot 1' do
-      expect(@map.place(10).spot).to eq(1)
-    end
-
-    it 'has 13th place in spot 1' do
-      expect(@map.place(13).spot).to eq(1)
-    end
-
-    it 'has 24th place in spot 6' do
-      expect(@map.place(24).spot).to eq(3)
-    end
-
-    it 'has 25th place in spot 1' do
-      expect(@map.place(25).spot).to eq(1)
-    end
-
-    it 'has 28th place in spot 4' do
-      expect(@map.place(28).spot).to eq(4)
-    end
-
-    it 'has 29th place in spot 5' do
-      expect(@map.place(29).spot).to eq(5)
-    end
-
-    it 'has 30th place in spot 1' do
-      expect(@map.place(30).spot).to eq(1)
-    end
-
-    it 'has 34th place in spot 5' do
-      expect(@map.place(34).spot).to eq(5)
-    end
-
-    it 'has 35th place in spot 1' do
-      expect(@map.place(35).spot).to eq(1)
-    end
-
-    it 'has last place in spot 5' do
-      expect(@map.place(54).spot).to eq(5)
-    end
-
-    it 'has every place with empty roads array' do
-      @map.places.each do |place|
-        expect(place.roads).to be_empty
+    describe 'roads' do
+      it 'has every place with empty roads array' do
+        @map.places.each do |place|
+          expect(place.roads).to be_empty
+        end
       end
     end
 
@@ -229,138 +148,36 @@ describe Map do
       expect{ @map.get_neighbours(55) }.to raise_error(Map::WrongIndexError)
     end
 
-    it 'knows that places 2, 6 and 24 are neighbours of place 1' do
-      expect(@map.get_neighbours(1)).to contain_exactly(@map.place(2),
-      @map.place(6),
-      @map.place(24))
+    def self.expect_neighbours(place_index, neighbour_indexes)
+      it "knows that place no. #{place_index} neighbours with #{neighbour_indexes.join(', ')}" do
+        neighbours = neighbour_indexes.map { |index| @map.place(index) }
+        expect(@map.get_neighbours(place_index)).to match_array(neighbours)
+      end
     end
 
-    it 'knows that places 1, 3 and 9 are neighbours of place 2' do
-      expect(@map.get_neighbours(2)).to contain_exactly(@map.place(1),
-      @map.place(3),
-      @map.place(9))
-    end
-
-    it 'knows that places 2, 4 and 12 are neighbours of place 3' do
-      expect(@map.get_neighbours(3)).to contain_exactly(@map.place(2),
-      @map.place(4),
-      @map.place(12))
-    end
-
-    it 'knows that places 5, 1 and 21 are neighbours of place 6' do
-      expect(@map.get_neighbours(6)).to contain_exactly(@map.place(5),
-      @map.place(1),
-      @map.place(21))
-    end
-
-    it 'knows that places 8, 24 and 54 are neighbours of place 7' do
-      expect(@map.get_neighbours(7)).to contain_exactly(@map.place(8),
-      @map.place(24),
-      @map.place(54))
-    end
-
-    it 'knows that places 7, 9 and 27 are neighbours of place 8' do
-      expect(@map.get_neighbours(8)).to contain_exactly(@map.place(7),
-      @map.place(9),
-      @map.place(27))
-    end
-
-    it 'knows that places 2, 8 and 10 are neighbours of place 9' do
-      expect(@map.get_neighbours(9)).to contain_exactly(@map.place(2),
-      @map.place(8),
-      @map.place(10))
-    end
-
-    it 'knows that places 9, 11 and 29 are neighbours of place 10' do
-      expect(@map.get_neighbours(10)).to contain_exactly(@map.place(9),
-      @map.place(11),
-      @map.place(29))
-    end
-
-    it 'knows that places 10, 12 and 32 are neighbours of place 11' do
-      expect(@map.get_neighbours(11)).to contain_exactly(@map.place(10),
-      @map.place(12),
-      @map.place(32))
-    end
-
-    it 'knows that places 3, 11 and 13 are neighbours of place 12' do
-      expect(@map.get_neighbours(12)).to contain_exactly(@map.place(3),
-      @map.place(11),
-      @map.place(13))
-    end
-
-    it 'knows that places 22, 24 and 52 are neighbours of place 23' do
-      expect(@map.get_neighbours(23)).to contain_exactly(@map.place(22),
-      @map.place(24),
-      @map.place(52))
-    end
-
-    it 'knows that places 1, 7 and 23 are neighbours of place 24' do
-      expect(@map.get_neighbours(24)).to contain_exactly(@map.place(1),
-      @map.place(7),
-      @map.place(23))
-    end
-
-    it 'knows that places 26 and 54 are neighbours of place 25' do
-      expect(@map.get_neighbours(25)).to contain_exactly(@map.place(26),
-      @map.place(54))
-    end
-
-    it 'knows that places 25 and 27 are neighbours of place 26' do
-      expect(@map.get_neighbours(26)).to contain_exactly(@map.place(25),
-      @map.place(27))
-    end
-
-    it 'knows that places 8, 26 and 28 are neighbours of place 27' do
-      expect(@map.get_neighbours(27)).to contain_exactly(@map.place(8),
-      @map.place(26),
-      @map.place(28))
-    end
-
-    it 'knows that places 27 and 29 are neighbours of place 28' do
-      expect(@map.get_neighbours(28)).to contain_exactly(@map.place(27),
-      @map.place(29))
-    end
-
-    it 'knows that places 10, 28 and 30 are neighbours of place 29' do
-      expect(@map.get_neighbours(29)).to contain_exactly(@map.place(10),
-      @map.place(28),
-      @map.place(30))
-    end
-
-    it 'knows that places 29 and 31 are neighbours of place 30' do
-      expect(@map.get_neighbours(30)).to contain_exactly(@map.place(29),
-      @map.place(31))
-    end
-
-    it 'knows that places 11, 31 and 33 are neighbours of place 32' do
-      expect(@map.get_neighbours(32)).to contain_exactly(@map.place(11),
-      @map.place(31),
-      @map.place(33))
-    end
-
-    it 'knows that places 13, 33 and 35 are neighbours of place 34' do
-      expect(@map.get_neighbours(34)).to contain_exactly(@map.place(13),
-      @map.place(33),
-      @map.place(35))
-    end
-
-    it 'knows that places 23, 51 and 53 are neighbours of place 52' do
-      expect(@map.get_neighbours(52)).to contain_exactly(@map.place(23),
-      @map.place(51),
-      @map.place(53))
-    end
-
-    it 'knows that places 52 and 54 are neighbours of place 53' do
-      expect(@map.get_neighbours(53)).to contain_exactly(@map.place(52),
-      @map.place(54))
-    end
-
-    it 'knows that places 7, 25 and 53 are neighbours of place 54' do
-      expect(@map.get_neighbours(54)).to contain_exactly(@map.place(7),
-      @map.place(25),
-      @map.place(53))
-    end
+    expect_neighbours(1, [2, 6, 24])
+    expect_neighbours(2, [1, 3, 9])
+    expect_neighbours(3, [2, 4, 12])
+    expect_neighbours(6, [5, 1, 21])
+    expect_neighbours(7, [8, 24, 54])
+    expect_neighbours(8, [7, 9, 27])
+    expect_neighbours(9, [2, 8, 10])
+    expect_neighbours(10, [9, 11, 29])
+    expect_neighbours(11, [10, 12, 32])
+    expect_neighbours(12, [3, 11, 13])
+    expect_neighbours(23, [22, 24, 52])
+    expect_neighbours(24, [1, 7, 23])
+    expect_neighbours(25, [26, 54])
+    expect_neighbours(26, [25, 27])
+    expect_neighbours(27, [8, 26, 28])
+    expect_neighbours(28, [27, 29])
+    expect_neighbours(29, [10, 28, 30])
+    expect_neighbours(30, [29, 31])
+    expect_neighbours(32, [11, 31, 33])
+    expect_neighbours(34, [13, 33, 35])
+    expect_neighbours(52, [23, 51, 53])
+    expect_neighbours(53, [52, 54])
+    expect_neighbours(54, [7, 25, 53])
   end
 
   it 'has proper number of fields' do
@@ -465,196 +282,6 @@ describe Map do
   end
 
   describe '#get_fields_of_place' do
-    it 'knows that fields 1, 2 and 7 are nearby place 1' do
-      expect(@map.get_fields_of_place(1)).to contain_exactly(@map.field(1),
-      @map.field(7),
-      @map.field(2))
-    end
-
-    it 'knows that fields 1, 2 and 7 are nearby place 2' do
-      expect(@map.get_fields_of_place(2)).to contain_exactly(@map.field(1),
-      @map.field(2),
-      @map.field(3))
-    end
-
-    it 'knows that fields 1, 3 and 4 are nearby place 3' do
-      expect(@map.get_fields_of_place(3)).to contain_exactly(@map.field(1),
-      @map.field(3),
-      @map.field(4))
-    end
-
-    it 'knows that fields 1, 6 and 7 are nearby place 6' do
-      expect(@map.get_fields_of_place(6)).to contain_exactly(@map.field(1),
-      @map.field(6),
-      @map.field(7))
-    end
-
-    it 'knows that fields 2, 8 and 19 are nearby place 7' do
-      expect(@map.get_fields_of_place(7)).to contain_exactly(@map.field(2),
-      @map.field(19),
-      @map.field(8))
-    end
-
-    it 'knows that fields 2, 8 and 9 are nearby place 8' do
-      expect(@map.get_fields_of_place(8)).to contain_exactly(@map.field(2),
-      @map.field(8),
-      @map.field(9))
-    end
-
-    it 'knows that fields 2, 3 and 9 are nearby place 9' do
-      expect(@map.get_fields_of_place(9)).to contain_exactly(@map.field(2),
-      @map.field(3),
-      @map.field(9))
-    end
-
-    it 'knows that fields 2, 3 and 9 are nearby place 10' do
-      expect(@map.get_fields_of_place(10)).to contain_exactly(@map.field(3),
-      @map.field(9),
-      @map.field(10))
-    end
-
-    it 'knows that fields 3, 10 and 11 are nearby place 11' do
-      expect(@map.get_fields_of_place(11)).to contain_exactly(@map.field(3),
-      @map.field(10),
-      @map.field(11))
-    end
-
-    it 'knows that fields 3, 4 and 11 are nearby place 12' do
-      expect(@map.get_fields_of_place(12)).to contain_exactly(@map.field(3),
-      @map.field(4),
-      @map.field(11))
-    end
-
-    it 'knows that fields 4, 11 and 12 are nearby place 13' do
-      expect(@map.get_fields_of_place(13)).to contain_exactly(@map.field(4),
-      @map.field(11),
-      @map.field(12))
-    end
-
-    it 'knows that fields 4, 12 and 13 are nearby place 14' do
-      expect(@map.get_fields_of_place(14)).to contain_exactly(@map.field(4),
-      @map.field(12),
-      @map.field(13))
-    end
-
-    it 'knows that fields 4, 5 and 13 are nearby place 15' do
-      expect(@map.get_fields_of_place(15)).to contain_exactly(@map.field(4),
-      @map.field(5),
-      @map.field(13))
-    end
-
-    it 'knows that fields 5, 13 and 14 are nearby place 16' do
-      expect(@map.get_fields_of_place(16)).to contain_exactly(@map.field(5),
-      @map.field(13),
-      @map.field(14))
-    end
-
-    it 'knows that fields 7, 17 and 18 are nearby place 22' do
-      expect(@map.get_fields_of_place(22)).to contain_exactly(@map.field(7),
-      @map.field(17),
-      @map.field(18))
-    end
-
-    it 'knows that fields 7, 18 and 19 are nearby place 23' do
-      expect(@map.get_fields_of_place(23)).to contain_exactly(@map.field(7),
-      @map.field(18),
-      @map.field(19))
-    end
-
-    it 'knows that fields 2, 7 and 19 are nearby place 24' do
-      expect(@map.get_fields_of_place(24)).to contain_exactly(@map.field(2),
-      @map.field(7),
-      @map.field(19))
-    end
-
-    it 'knows that field 8 is nearby place 25' do
-      expect(@map.get_fields_of_place(25)).to contain_exactly(@map.field(8))
-    end
-
-    it 'knows that field 8 is nearby place 26' do
-      expect(@map.get_fields_of_place(26)).to contain_exactly(@map.field(8))
-    end
-
-    it 'knows that fields 8 and 9 are nearby place 27' do
-      expect(@map.get_fields_of_place(27)).to contain_exactly(@map.field(8),
-      @map.field(9))
-    end
-
-    it 'knows that field 9 is nearby place 28' do
-      expect(@map.get_fields_of_place(28)).to contain_exactly(@map.field(9))
-    end
-
-    it 'knows that fields 9 and 10 are nearby place 29' do
-      expect(@map.get_fields_of_place(29)).to contain_exactly(@map.field(9),
-      @map.field(10))
-    end
-
-    it 'knows that field 10 is nearby place 30' do
-      expect(@map.get_fields_of_place(30)).to contain_exactly(@map.field(10))
-    end
-
-    it 'knows that field 10 is nearby place 31' do
-      expect(@map.get_fields_of_place(31)).to contain_exactly(@map.field(10))
-    end
-
-    it 'knows that fields 10 and 11 are nearby place 32' do
-      expect(@map.get_fields_of_place(32)).to contain_exactly(@map.field(10),
-      @map.field(11))
-    end
-
-    it 'knows that field 11 is nearby place 33' do
-      expect(@map.get_fields_of_place(33)).to contain_exactly(@map.field(11))
-    end
-
-    it 'knows that fields 11 and 12 are nearby place 34' do
-      expect(@map.get_fields_of_place(34)).to contain_exactly(@map.field(11),
-      @map.field(12))
-    end
-
-    it 'knows that field 12 is nearby place 35' do
-      expect(@map.get_fields_of_place(35)).to contain_exactly(@map.field(12))
-    end
-
-    it 'knows that field 12 is nearby place 36' do
-      expect(@map.get_fields_of_place(36)).to contain_exactly(@map.field(12))
-    end
-
-    it 'knows that fields 12 and 13 are nearby place 37' do
-      expect(@map.get_fields_of_place(37)).to contain_exactly(@map.field(12),
-      @map.field(13))
-    end
-
-    it 'knows that field 13 is nearby place 38' do
-      expect(@map.get_fields_of_place(38)).to contain_exactly(@map.field(13))
-    end
-
-    it 'knows that fields 13 and 14 are nearby place 39' do
-      expect(@map.get_fields_of_place(39)).to contain_exactly(@map.field(13),
-      @map.field(14))
-    end
-
-    it 'knows that field 18 is nearby place 50' do
-      expect(@map.get_fields_of_place(50)).to contain_exactly(@map.field(18))
-    end
-
-    it 'knows that field 18 is nearby place 51' do
-      expect(@map.get_fields_of_place(51)).to contain_exactly(@map.field(18))
-    end
-
-    it 'knows that fields 18 and 19 are nearby place 52' do
-      expect(@map.get_fields_of_place(52)).to contain_exactly(@map.field(18),
-      @map.field(19))
-    end
-
-    it 'knows that field 19 is nearby place 53' do
-      expect(@map.get_fields_of_place(53)).to contain_exactly(@map.field(19))
-    end
-
-    it 'knows that fields 8 and 19 are nearby place 54' do
-      expect(@map.get_fields_of_place(54)).to contain_exactly(@map.field(8),
-      @map.field(19))
-    end
-
     it 'fails when try to get too low-numbered fields of place' do
       expect{ @map.get_fields_of_place(0) }.to raise_error(Map::WrongIndexError)
     end
@@ -666,63 +293,54 @@ describe Map do
     it 'returns nil when try to get nil fields of place' do
       expect{ @map.get_fields_of_place(nil) }.to raise_error(Map::WrongIndexError)
     end
+
+    def self.expect_fields_of_place(place_index, fields_indexes)
+      it "knows that nearby place no. #{place_index} are fields #{fields_indexes.join(', ')}" do
+        fields = fields_indexes.map { |index| @map.field(index) }
+        expect(@map.get_fields_of_place(place_index)).to match_array(fields)
+      end
+    end
+
+    expect_fields_of_place(1, [1, 7, 2])
+    expect_fields_of_place(2, [1, 2, 3])
+    expect_fields_of_place(3, [1, 3, 4])
+    expect_fields_of_place(6, [1, 6, 7])
+    expect_fields_of_place(7, [2, 19, 8])
+    expect_fields_of_place(8, [2, 8, 9])
+    expect_fields_of_place(9, [2, 3, 9])
+    expect_fields_of_place(10, [3, 9, 10])
+    expect_fields_of_place(11, [3, 10, 11])
+    expect_fields_of_place(12, [3, 4, 11])
+    expect_fields_of_place(13, [4, 11, 12])
+    expect_fields_of_place(14, [4, 12, 13])
+    expect_fields_of_place(15, [4, 5, 13])
+    expect_fields_of_place(16, [5, 13, 14])
+    expect_fields_of_place(22, [7, 17, 18])
+    expect_fields_of_place(23, [7, 18, 19])
+    expect_fields_of_place(24, [2, 7, 19])
+    expect_fields_of_place(25, [8])
+    expect_fields_of_place(26, [8])
+    expect_fields_of_place(27, [8, 9])
+    expect_fields_of_place(28, [9])
+    expect_fields_of_place(29, [9, 10])
+    expect_fields_of_place(30, [10])
+    expect_fields_of_place(31, [10])
+    expect_fields_of_place(32, [10, 11])
+    expect_fields_of_place(33, [11])
+    expect_fields_of_place(34, [11, 12])
+    expect_fields_of_place(35, [12])
+    expect_fields_of_place(36, [12])
+    expect_fields_of_place(37, [12, 13])
+    expect_fields_of_place(38, [13])
+    expect_fields_of_place(39, [13, 14])
+    expect_fields_of_place(50, [18])
+    expect_fields_of_place(51, [18])
+    expect_fields_of_place(52, [18, 19])
+    expect_fields_of_place(53, [19])
+    expect_fields_of_place(54, [8, 19])
   end
 
   describe '#get_places_of_field' do
-    it 'knows that places 1, 2, 3, 4, 5 and 6 are nearby field 1' do
-      expect(@map.get_places_of_field(1)).to contain_exactly(@map.place(1),
-      @map.place(2),
-      @map.place(3),
-      @map.place(4),
-      @map.place(5),
-      @map.place(6))
-    end
-
-    it 'knows that places 1, 2, 7, 8, 9 and 24 are nearby field 2' do
-      expect(@map.get_places_of_field(2)).to contain_exactly(@map.place(1),
-      @map.place(2),
-      @map.place(7),
-      @map.place(8),
-      @map.place(9),
-      @map.place(24))
-    end
-
-    it 'knows that places 4, 5, 15, 16, 17 and 18 are nearby field 5' do
-      expect(@map.get_places_of_field(5)).to contain_exactly(@map.place(4),
-      @map.place(5),
-      @map.place(15),
-      @map.place(16),
-      @map.place(17),
-      @map.place(18))
-    end
-
-    it 'knows that places 7, 8, 25, 26, 27 and 54 are nearby field 8' do
-      expect(@map.get_places_of_field(8)).to contain_exactly(@map.place(7),
-      @map.place(8),
-      @map.place(25),
-      @map.place(26),
-      @map.place(27),
-      @map.place(54))
-    end
-
-    it 'knows that places 13, 14, 34, 35, 36 and 37 are nearby field 12' do
-      expect(@map.get_places_of_field(12)).to contain_exactly(@map.place(13),
-      @map.place(14),
-      @map.place(34),
-      @map.place(35),
-      @map.place(36),
-      @map.place(37))
-    end
-
-    it 'knows that places 7, 23, 24, 52, 53 and 54 are nearby field 19' do
-      expect(@map.get_places_of_field(19)).to contain_exactly(@map.place(7),
-      @map.place(23),
-      @map.place(24),
-      @map.place(52),
-      @map.place(53),
-      @map.place(54))
-    end
-
     it 'fails when try to get too low-numbered places of field' do
       expect{ @map.get_places_of_field(0) }.to raise_error(Map::WrongIndexError)
     end
@@ -734,6 +352,20 @@ describe Map do
     it 'returns nil when try to get nil places of field' do
       expect{ @map.get_places_of_field(nil) }.to raise_error(Map::WrongIndexError)
     end
+
+    def self.expect_places_of_field(field_index, places_indexes)
+      it "knows that nearby field no. #{field_index} are places #{places_indexes.join(', ')}" do
+        places = places_indexes.map { |index| @map.place(index) }
+        expect(@map.get_places_of_field(field_index)).to match_array(places)
+      end
+    end
+
+    expect_places_of_field(1, [1, 2, 3, 4, 5, 6])
+    expect_places_of_field(2, [1, 2, 7, 8, 9, 24])
+    expect_places_of_field(5, [4, 5, 15, 16, 17, 18])
+    expect_places_of_field(8, [7, 8, 25, 26, 27, 54])
+    expect_places_of_field(12, [13, 14, 34, 35, 36, 37])
+    expect_places_of_field(19, [7, 23, 24, 52, 53, 54])
   end
 
   describe '#build_road' do

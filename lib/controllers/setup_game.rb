@@ -1,15 +1,6 @@
 require_relative 'controller'
 
 class SetupGame < Controller
-  def invoke
-    error = validate
-    if error
-      raise InvalidParameters.new(error)
-    else
-      execute
-    end
-  end
-
   def execute
     @response = {}
     @response[:map] = setup_map

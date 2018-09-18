@@ -4,12 +4,16 @@ class Controller
   end
 
   def invoke
-    raise InvalidParameters unless valid?
-    execute
+    error = validate
+    if error
+      raise InvalidParameters.new(error)
+    else
+      execute
+    end
   end
 
-  def valid?
-    true
+  def validate
+    nil
   end
 
   def execute

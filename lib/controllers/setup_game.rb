@@ -65,7 +65,7 @@ class SetupGame < Controller
     @request[:players].map { |p| p[:color] }
   end
 
-  def has_duplicates(player_names)
-    player_names.uniq.length != player_names.length
+  def has_duplicates(collection)
+    collection.uniq.length != collection.length
   end
 end

@@ -155,7 +155,7 @@ describe SetupGame do
     end
 
     context 'with four players' do
-      before (:each) do
+      before(:each) do
         @valid_players = valid_players
         @valid_players << {:name => 'John', :color => :red}
         @valid_players << {:name => 'Mark', :color => :white}
@@ -163,6 +163,7 @@ describe SetupGame do
         @request = valid_request
         @request[:players] = @valid_players
         @response = SetupGame.new(@request).invoke
+
         @map = @response[:map]
         @players = @response[:players]
         @current_player = @response[:current_player]

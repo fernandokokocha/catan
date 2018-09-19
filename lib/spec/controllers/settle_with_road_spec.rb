@@ -10,84 +10,126 @@ describe SettleWithRoad do
 
   it 'raises error if request is nil' do
     request = nil
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Params is not a hash'
+    )
   end
 
   it 'raises error if request is not a hash' do
     request = []
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Params is not a hash'
+    )
   end
 
   it 'requires map' do
     request = valid_request
     request.delete(:map)
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Missing :map key in params'
+    )
   end
 
   it 'raises error if map is nil' do
     request = valid_request
     request[:map] = nil
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':map value is not a Map'
+    )
   end
 
   it 'raises error unless map is my map' do
     request = valid_request
     request[:map] = "hey trust me, I'm a map"
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':map value is not a Map'
+    )
   end
 
   it 'requires place' do
     request = valid_request
     request.delete(:place)
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Missing :place key in params'
+    )
   end
 
   it 'raises error if place is nil' do
     request = valid_request
-    request[:map] = nil
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    request[:place] = nil
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Invalid :place value'
+    )
   end
 
   it 'raises error if place is NaN' do
     request = valid_request
-    request[:map] = '5'
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    request[:place] = '5'
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Invalid :place value'
+    )
   end
 
   it 'raises error if place is not in map' do
     request = valid_request
-    request[:map] = 102
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    request[:place] = 102
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Invalid :place value'
+    )
   end
 
   it 'requires neighbour' do
     request = valid_request
     request.delete(:neighbour)
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Missing :neighbour key in params'
+    )
   end
 
   it 'raises error if neighbour is nil' do
     request = valid_request
     request[:neighbour] = nil
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Invalid :neighbour value'
+    )
   end
 
   it 'raises error if neighbour is NaN' do
     request = valid_request
     request[:neighbour] = nil
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Invalid :neighbour value'
+    )
   end
 
   it 'raises error if neighbour is not in map' do
     request = valid_request
     request[:neighbour] = 102
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Invalid :neighbour value'
+    )
   end
 
   it 'raises error if neighbour is not a neighbour' do
     request = valid_request
     request[:neighbour] = 50
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      "Place and neighbour don't border"
+    )
   end
 
   it 'fails when place is already taken' do
@@ -96,7 +138,10 @@ describe SettleWithRoad do
     map.place(valid_place).settle(player)
     request = valid_request
     request[:map] = map
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Cannot settle this place'
+    )
   end
 
   it 'fails when neighbour is already taken' do
@@ -105,25 +150,37 @@ describe SettleWithRoad do
     map.place(valid_neighbour).settle(player)
     request = valid_request
     request[:map] = map
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Cannot settle this place'
+    )
   end
 
   it 'requires current_player' do
     request = valid_request
     request.delete(:current_player)
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Missing :current_player key in params'
+    )
   end
 
   it 'fails if current_player is nil' do
     request = valid_request
     request[:current_player] = nil
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':current_player value is not a Player'
+    )
   end
 
-  it 'fails if current_player is not my player' do
+  it 'fails if current_player is not a Player' do
     request = valid_request
     request[:current_player] = 'A player'
-    expect{ SettleWithRoad.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ SettleWithRoad.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':current_player value is not a Player'
+    )
   end
 
   context 'when valid request' do

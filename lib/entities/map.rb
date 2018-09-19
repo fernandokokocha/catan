@@ -1,6 +1,3 @@
-require_relative 'place'
-require_relative 'field'
-
 #  Fields' numbers:
 #            ____
 #       ____╱  8 ╲____

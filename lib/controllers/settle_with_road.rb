@@ -1,6 +1,3 @@
-require_relative 'controller'
-require_relative '../entities/map'
-
 class SettleWithRoad < Controller
   def execute
     @map.settle_place(@place, @current_player)

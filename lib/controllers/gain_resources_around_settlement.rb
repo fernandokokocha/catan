@@ -1,5 +1,3 @@
-require_relative 'controller'
-
 class GainResourcesAroundSettlement < Controller
   def execute
     @map.get_fields_of_place(@place).each do |field|

@@ -1,5 +1,3 @@
-require_relative 'controller'
-
 class SetupGame < Controller
   def execute
     @response = {}

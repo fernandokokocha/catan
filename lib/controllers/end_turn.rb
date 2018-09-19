@@ -1,5 +1,3 @@
-require_relative 'controller'
-
 class EndTurn < Controller
   def validate
     return 'Params is not a hash' unless @request.is_a?(Hash)

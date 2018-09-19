@@ -1,4 +1,4 @@
-describe GainResourcesAroundCity do
+describe GainResourcesAroundSettlement do
   let(:valid_current_player) { Player.new('Bartek', :orange) }
   let(:valid_place) { 8 }
   let(:valid_map) { Map.new }
@@ -8,72 +8,105 @@ describe GainResourcesAroundCity do
 
   it 'raises error if request is nil' do
     request = nil
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Params is not a hash'
+    )
   end
 
   it 'raises error if request is not a hash' do
     request = []
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Params is not a hash'
+    )
   end
 
   it 'requires current_player' do
     request = valid_request
     request.delete(:current_player)
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Missing :current_player key in params'
+    )
   end
 
   it 'raises error if current_player is nil' do
     request = valid_request
     request[:current_player] = nil
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':current_player key is not a Player'
+    )
   end
 
   it 'raises error if current_player is not a player' do
     request = valid_request
     request[:current_player] = "Let me play, I'm a player"
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':current_player key is not a Player'
+    )
   end
 
   it 'requires place' do
     request = valid_request
     request.delete(:place)
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Missing :place key in params'
+    )
   end
 
   it 'raises error if place is nil' do
     request = valid_request
     request[:place] = nil
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':place key is not an Integer'
+    )
   end
 
   it 'raises error if place is NaN' do
     request = valid_request
     request[:place] = '1'
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':place key is not an Integer'
+    )
   end
 
   it 'requires map' do
     request = valid_request
     request.delete(:map)
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      'Missing :map value key in params'
+    )
   end
 
   it 'raises error if map is nil' do
     request = valid_request
     request[:map] = nil
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':map key is not a Map'
+    )
   end
 
   it 'raises error if map is not a map' do
     request = valid_request
     request[:map] = 'There ore and there lumber'
-    expect{ GainResourcesAroundCity.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+      Controller::InvalidParameters,
+      ':map key is not a Map'
+    )
   end
 
   context 'when valid request' do
     it 'can be successfully invoked' do
       request = valid_request
-      expect{ GainResourcesAroundCity.new(request).invoke }.not_to raise_error
+      expect{ GainResourcesAroundSettlement.new(request).invoke }.not_to raise_error
     end
 
     it 'gives player one of every resources around' do
@@ -83,7 +116,7 @@ describe GainResourcesAroundCity do
       map.fields[8] = Field.new(9, :brick, 1)
       request = valid_request
       request[:map] = map
-      GainResourcesAroundCity.new(request).invoke
+      GainResourcesAroundSettlement.new(request).invoke
       expect_resources(request[:current_player], 1, 1, 1, 0, 0)
     end
 
@@ -94,7 +127,7 @@ describe GainResourcesAroundCity do
       map.fields[8] = Field.new(9, :brick, 1)
       request = valid_request
       request[:map] = map
-      GainResourcesAroundCity.new(request).invoke
+      GainResourcesAroundSettlement.new(request).invoke
       expect_resources(request[:current_player], 0, 1, 2, 0, 0)
     end
 
@@ -105,7 +138,7 @@ describe GainResourcesAroundCity do
       map.fields[8] = Field.new(9, :brick, 1)
       request = valid_request
       request[:map] = map
-      GainResourcesAroundCity.new(request).invoke
+      GainResourcesAroundSettlement.new(request).invoke
       expect_resources(request[:current_player], 0, 0, 3, 0, 0)
     end
 
@@ -116,7 +149,7 @@ describe GainResourcesAroundCity do
       map.fields[8] = Field.new(9, :brick, 1)
       request = valid_request
       request[:map] = map
-      GainResourcesAroundCity.new(request).invoke
+      GainResourcesAroundSettlement.new(request).invoke
       expect_resources(request[:current_player], 0, 0, 1, 1, 0)
     end
 
@@ -127,7 +160,7 @@ describe GainResourcesAroundCity do
       request = valid_request
       request[:map] = map
       request[:place] = 27
-      GainResourcesAroundCity.new(request).invoke
+      GainResourcesAroundSettlement.new(request).invoke
       expect_resources(request[:current_player], 0, 0, 0, 1, 1)
     end
 
@@ -138,7 +171,7 @@ describe GainResourcesAroundCity do
       request = valid_request
       request[:map] = map
       request[:place] = 27
-      GainResourcesAroundCity.new(request).invoke
+      GainResourcesAroundSettlement.new(request).invoke
       expect_resources(request[:current_player], 0, 0, 0, 0, 2)
     end
 
@@ -148,7 +181,7 @@ describe GainResourcesAroundCity do
       request = valid_request
       request[:map] = map
       request[:place] = 26
-      GainResourcesAroundCity.new(request).invoke
+      GainResourcesAroundSettlement.new(request).invoke
       expect_resources(request[:current_player], 1, 0, 0, 0, 0)
     end
   end

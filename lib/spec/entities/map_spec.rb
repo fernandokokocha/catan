@@ -9,10 +9,6 @@ describe Map do
     @map = Map.new
   end
 
-  it 'has 3 layers' do
-    expect(@map.layers_count).to eq(3)
-  end
-
   it 'has proper number of places' do
     expect(@map.places_count).to eq(54)
   end

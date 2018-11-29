@@ -110,10 +110,6 @@ describe SetupGame do
       expect(@map).to be_instance_of Map
     end
 
-    it 'returns map with 3 layers' do
-      expect(@map.layers_count).to eq(3)
-    end
-
     it 'returns players' do
       expect(@players).not_to be_empty
       @players.each do |user|

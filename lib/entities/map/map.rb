@@ -36,10 +36,10 @@
 #                41----40
 
 class Map
-  attr_accessor :layers_count, :places, :fields
+  attr_accessor :places, :fields, :settings
 
   def initialize
-    @layers_count = 3
+    @settings = Settings.new
     @places = initialize_places
     @fields = initialize_fields
   end
@@ -103,15 +103,14 @@ class Map
 
   private
   def initialize_places
-    max = max_place_index
+    max = settings.max_place_index
     (1..max).map { |index| Place.new(index) }
   end
 
-
   def initialize_fields
-    max = max_field_index
-    resources = resources_dist
-    numbers = numbers_dist
+    max = settings.max_field_index
+    resources = settings.resources_dist
+    numbers = settings.numbers_dist
     fields = []
     fields << Field.new(1, :desert, 7)
     (2..max).each do |index|
@@ -120,35 +119,6 @@ class Map
       fields << Field.new(index, r, n)
     end
     fields
-  end
-
-  def max_field_index
-    (1+6+12)
-  end
-
-  def max_place_index
-    @layers_count * @layers_count * 6
-  end
-
-  def numbers_dist
-    Array.new(1, 2) +
-        Array.new(2, 3) +
-        Array.new(2, 4) +
-        Array.new(2, 5) +
-        Array.new(2, 6) +
-        Array.new(2, 8) +
-        Array.new(2, 9) +
-        Array.new(2, 10) +
-        Array.new(2, 11) +
-        Array.new(1, 12)
-  end
-
-  def resources_dist
-    Array.new(3, :ore) +
-        Array.new(3, :brick) +
-        Array.new(4, :wool) +
-        Array.new(4, :grain) +
-        Array.new(4, :lumber)
   end
 
   def get_neighbours_indexes index

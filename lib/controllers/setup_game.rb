@@ -16,8 +16,8 @@ class SetupGame < Controller
 
     return ':players key is not an array' unless players.is_a?(Array)
     return ':players key is empty' if players.empty?
-    return 'Non-unique player names' if has_duplicates(player_names)
-    return 'Non-unique player colors' if has_duplicates(player_colors)
+    return 'Non-unique player names' if duplicates?(player_names)
+    return 'Non-unique player colors' if duplicates?(player_colors)
     return 'Illegal color' if player_colors - valid_colors != []
 
     nil
@@ -54,7 +54,7 @@ class SetupGame < Controller
     @request[:players].map { |p| p[:color] }
   end
 
-  def has_duplicates(collection)
+  def duplicates?(collection)
     collection.uniq.length != collection.length
   end
 end

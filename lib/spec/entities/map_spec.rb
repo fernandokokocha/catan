@@ -5,7 +5,7 @@ describe Map do
   let(:valid_place2) { 3 }
   let(:valid_neighbour2) { 6 }
 
-  before (:each) do
+  before(:each) do
     @map = Map.new
   end
 

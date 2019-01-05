@@ -1,5 +1,5 @@
 describe Catan do
-  before (:each) do
+  before(:each) do
     @app = Catan.new
   end
 

@@ -1,0 +1,10 @@
+Style/Documentation:
+  Enabled: false
+
+Style/AsciiComments:
+  AllowedChars:
+    - ╲
+    - ╱
+
+Metrics/LineLength:
+  Max: 120

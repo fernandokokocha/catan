@@ -5,11 +5,9 @@ class Controller
 
   def invoke
     error = validate
-    if error
-      raise InvalidParameters, error
-    else
-      execute
-    end
+    raise InvalidParameters, error if error
+
+    execute
   end
 
   def validate

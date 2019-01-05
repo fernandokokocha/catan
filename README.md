@@ -20,3 +20,9 @@ No particular version is required. Works fine for 3.7, although started for some
 ### Run tests
 
 Issue `rspec` in the root directory.
+
+### Rubocop
+
+Rubocop is used in version 0.62.0.
+
+Default configuration has been slightly changed in global `.rubocop.yml` file, and also even more narrowed down in `spec` directory.

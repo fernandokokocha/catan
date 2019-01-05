@@ -40,7 +40,7 @@ describe EndTurn do
     request[:turn] = nil
     expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':turn value is not an Integer'
+      ':turn value is not of type Integer'
     )
   end
 
@@ -49,7 +49,7 @@ describe EndTurn do
     request[:turn] = 'First'
     expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':turn value is not an Integer'
+      ':turn value is not of type Integer'
     )
   end
 
@@ -67,7 +67,7 @@ describe EndTurn do
     request[:players] = nil
     expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':players value is not an array'
+      ':players value is not of type Array'
     )
   end
 
@@ -76,7 +76,7 @@ describe EndTurn do
     request[:players] = first_player
     expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':players value is not an array'
+      ':players value is not of type Array'
     )
   end
 

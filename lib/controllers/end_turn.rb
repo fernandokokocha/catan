@@ -1,14 +1,16 @@
 class EndTurn < Controller
+  def expected_params
+    {
+      turn: Integer,
+      players: Array,
+      current_player: :any
+    }
+  end
+
   def validate
-    return 'Params is not a hash' unless @request.is_a?(Hash)
-    return 'Missing :turn key in params' unless @request.key?(:turn)
-    return 'Missing :players key in params' unless @request.key?(:players)
-    return 'Missing :current_player key in params' unless @request.key?(:current_player)
+    error = validate_params and return error
 
-    return ':turn value is not an Integer' unless @request[:turn].is_a?(Integer)
-    return ':players value is not an array' unless @request[:players].is_a?(Array)
     return ':players value is empty array' if @request[:players].empty?
-
     @request[:players].each do |player|
       return 'Illegal entry in :players value' unless player.is_a?(Player)
     end

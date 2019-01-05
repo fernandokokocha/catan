@@ -8,3 +8,9 @@ Style/AsciiComments:
 
 Metrics/LineLength:
   Max: 120
+
+Style/AndOr:
+  EnforcedStyle: conditionals
+
+Layout/EmptyLineAfterGuardClause:
+  Enabled: false

@@ -44,33 +44,38 @@ class Map
     @fields = initialize_fields
   end
 
-  def place index
+  def place(index)
     raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @places.count)
-    @places[index-1]
+
+    @places[index - 1]
   end
 
-  def field index
+  def field(index)
     raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @fields.count)
-    @fields[index-1]
+
+    @fields[index - 1]
   end
 
-  def get_neighbours index
+  def get_neighbours(index)
     raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @places.count)
+
     get_neighbours_indexes(index).map { |i| place(i) }
   end
 
-  def get_fields_of_place index
+  def get_fields_of_place(index)
     raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @places.count)
+
     get_fields_indexes_of_place(index).map { |i| field(i) }
   end
 
-  def get_places_of_field index
+  def get_places_of_field(index)
     raise WrongIndexError unless index.is_a?(Integer)
     raise WrongIndexError unless index.between?(1, @fields.count)
+
     get_places_indexes_of_field(index).map { |i| place(i) }
   end
 
@@ -82,18 +87,18 @@ class Map
     @fields.count
   end
 
-  def settle_place index, player
+  def settle_place(index, player)
     place(index).settle player
   end
 
-  def can_settle? index
+  def can_settle?(index)
     return false if place(index).settled_by
-    return false if get_neighbours(index).select { |place| place.settled_by }.any?
+    return false if get_neighbours(index).select(&:settled_by).any?
 
     true
   end
 
-  def build_road place, neighbour, player
+  def build_road(place, neighbour, player)
     place(place).add_road(neighbour, player)
     place(neighbour).add_road(place, player)
   end
@@ -102,6 +107,7 @@ class Map
   end
 
   private
+
   def initialize_places
     max = settings.max_place_index
     (1..max).map { |index| Place.new(index) }
@@ -121,10 +127,10 @@ class Map
     fields
   end
 
-  def get_neighbours_indexes index
+  def get_neighbours_indexes(index)
     place = place(index)
-    circuit = 6*(2*place.layer - 1)
-    circuit_sum = 6*(place.layer * place.layer)
+    circuit = 6 * (2 * place.layer - 1)
+    circuit_sum = 6 * (place.layer * place.layer)
 
     result = Array.new(3)
     result[0] = index + circuit - 1
@@ -132,22 +138,22 @@ class Map
     result[1] = index + 1
     result[1] -= circuit if result[1] > circuit_sum
     case place.layer
-      when 1
-        result[2] = (index + 1) * 3
-        result[2] = 24 if index == 1
-      when 2
-        if [1,2].include? place.spot
-          result[2] = 19 + (place.side)*5 + (index-(4 + place.side*3))*3
-          result[2] += 30 if result[2] < 25
-        else
-          result[2] = (index - 3) / 3
-          result[2] -= 6 if result[2] > 6
-        end
+    when 1
+      result[2] = (index + 1) * 3
+      result[2] = 24 if index == 1
+    when 2
+      if [1, 2].include? place.spot
+        result[2] = 19 + place.side * 5 + (index - (4 + place.side * 3)) * 3
+        result[2] += 30 if result[2] < 25
       else
-        if [3,5].include? place.spot
-          result[2] = 2 + place.spot + place.side*3
-          result[2] -= 18 if result[2] > 24
-        end
+        result[2] = (index - 3) / 3
+        result[2] -= 6 if result[2] > 6
+      end
+    else
+      if [3, 5].include? place.spot
+        result[2] = 2 + place.spot + place.side * 3
+        result[2] -= 18 if result[2] > 24
+      end
     end
     result.compact
   end
@@ -157,36 +163,36 @@ class Map
 
     result = Array.new(3)
     base = place.layer < 3 ? 1 : 6
-    result[0] = base + place.side*(place.layer - 1)
+    result[0] = base + place.side * (place.layer - 1)
     result[0] += 1 if place.spot > 3
     case place.layer
-      when 1
-        result[1] = index
-        result[1] += 6 if result[1] < 2
-        result[2] = index + 1
-      when 2
-        result[1] = index - place.side + 1
-        result[1] += 12 if result[1] <= 7
+    when 1
+      result[1] = index
+      result[1] += 6 if result[1] < 2
+      result[2] = index + 1
+    when 2
+      result[1] = index - place.side + 1
+      result[1] += 12 if result[1] <= 7
 
-        if [1,2].include? place.spot
-          result[2] = index - place.side + 2
-        else
-          result[2] = 2 + place.side
-          result[2] -= 6 if result[2] > 7
-        end
+      if [1, 2].include? place.spot
+        result[2] = index - place.side + 2
       else
-        if place.spot == 3
-          result[1] = 6 + place.side*2 + 1
-        elsif place.spot == 5
-          result[1] = 6 + place.side*2 + 2
-          result[1] -= 12 if result[1] > 19
-        end
+        result[2] = 2 + place.side
+        result[2] -= 6 if result[2] > 7
+      end
+    else
+      if place.spot == 3
+        result[1] = 6 + place.side * 2 + 1
+      elsif place.spot == 5
+        result[1] = 6 + place.side * 2 + 2
+        result[1] -= 12 if result[1] > 19
+      end
     end
     result.compact
   end
 
   def get_places_indexes_of_field(index)
     field(index)
-    (1..@places.count).select { |i| get_fields_indexes_of_place(i).include? index}
+    (1..@places.count).select { |i| get_fields_indexes_of_place(i).include? index }
   end
 end

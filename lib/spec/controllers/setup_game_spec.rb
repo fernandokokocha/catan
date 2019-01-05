@@ -1,11 +1,11 @@
 describe SetupGame do
-  let(:valid_player) { {name: 'Bartek', color: :orange} }
+  let(:valid_player) { { name: 'Bartek', color: :orange } }
   let(:valid_players) { [valid_player] }
-  let(:valid_request) { {players: valid_players} }
+  let(:valid_request) { { players: valid_players } }
 
   it 'raises error if request is nil' do
     request = nil
-    expect{ SetupGame.new(request).invoke }.to raise_error(
+    expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Params is not a hash'
     )
@@ -13,7 +13,7 @@ describe SetupGame do
 
   it 'raises error if request is not a hash' do
     request = []
-    expect{ SetupGame.new(request).invoke }.to raise_error(
+    expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Params is not a hash'
     )
@@ -22,7 +22,7 @@ describe SetupGame do
   it 'requires players' do
     request = valid_request
     request.delete(:players)
-    expect{ SetupGame.new(request).invoke }.to raise_error(
+    expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Missing :players key in params'
     )
@@ -31,7 +31,7 @@ describe SetupGame do
   it 'raises error if players is not an array' do
     request = valid_request
     request[:players] = 2
-    expect{ SetupGame.new(request).invoke }.to raise_error(
+    expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':players key is not an array'
     )
@@ -40,19 +40,19 @@ describe SetupGame do
   it 'raises error if players is empty array' do
     request = valid_request
     request[:players] = []
-    expect{ SetupGame.new(request).invoke }.to raise_error(
+    expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ":players key is empty"
+      ':players key is empty'
     )
   end
 
   it 'raises error if players have the same name' do
     players = []
-    players << {:name => 'Bartek', :color => :orange}
-    players << {:name => 'Bartek', :color => :red}
+    players << { name: 'Bartek', color: :orange }
+    players << { name: 'Bartek', color: :red }
     request = valid_request
     request[:players] = players
-    expect{ SetupGame.new(request).invoke }.to raise_error(
+    expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Non-unique player names'
     )
@@ -60,11 +60,11 @@ describe SetupGame do
 
   it 'raises error if players have the same color' do
     players = []
-    players << {:name => 'Bartek', :color => :orange}
-    players << {:name => 'John', :color => :orange}
+    players << { name: 'Bartek', color: :orange }
+    players << { name: 'John', color: :orange }
     request = valid_request
     request[:players] = players
-    expect{ SetupGame.new(request).invoke }.to raise_error(
+    expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Non-unique player colors'
     )
@@ -72,10 +72,10 @@ describe SetupGame do
 
   it 'raises error if player has illegal color' do
     players = []
-    players << {:name => 'Bartek',:color => :yellow}
+    players << { name: 'Bartek', color: :yellow }
     request = valid_request
     request[:players] = players
-    expect{ SetupGame.new(request).invoke }.to raise_error(
+    expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Illegal color'
     )
@@ -83,14 +83,14 @@ describe SetupGame do
 
   it 'raises error if more than 4 players' do
     players = []
-    players << {:name => 'Bartek', :color => :orange}
-    players << {:name => 'John', :color => :red}
-    players << {:name => 'Mark', :color => :white}
-    players << {:name => 'Wojtas', :color => :blue}
-    players << {:name => 'Marcin', :color => :green}
+    players << { name: 'Bartek', color: :orange }
+    players << { name: 'John', color: :red }
+    players << { name: 'Mark', color: :white }
+    players << { name: 'Wojtas', color: :blue }
+    players << { name: 'Marcin', color: :green }
     request = valid_request
     request[:players] = players
-    expect{ SetupGame.new(request).invoke }.to raise_error(
+    expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Illegal color'
     )
@@ -147,15 +147,14 @@ describe SetupGame do
           expect(@players[0].resources[resource_name]).to eq(0)
         end
       end
-
     end
 
     context 'with four players' do
       before(:each) do
         @valid_players = valid_players
-        @valid_players << {:name => 'John', :color => :red}
-        @valid_players << {:name => 'Mark', :color => :white}
-        @valid_players << {:name => 'Wojtas', :color => :blue}
+        @valid_players << { name: 'John', color: :red }
+        @valid_players << { name: 'Mark', color: :white }
+        @valid_players << { name: 'Wojtas', color: :blue }
         @request = valid_request
         @request[:players] = @valid_players
         @response = SetupGame.new(@request).invoke

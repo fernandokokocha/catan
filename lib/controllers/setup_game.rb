@@ -10,12 +10,12 @@ class SetupGame < Controller
 
   def validate
     return 'Params is not a hash' unless @request.is_a?(Hash)
-    return 'Missing :players key in params' unless @request.has_key?(:players)
+    return 'Missing :players key in params' unless @request.key?(:players)
 
     players = @request[:players]
 
     return ':players key is not an array' unless players.is_a?(Array)
-    return ":players key is empty" if players.empty?
+    return ':players key is empty' if players.empty?
     return 'Non-unique player names' if has_duplicates(player_names)
     return 'Non-unique player colors' if has_duplicates(player_colors)
     return 'Illegal color' if player_colors - valid_colors != []
@@ -24,6 +24,7 @@ class SetupGame < Controller
   end
 
   private
+
   def setup_map
     Map.new
   end
@@ -41,9 +42,8 @@ class SetupGame < Controller
     @response[:players].sample
   end
 
-
   def valid_colors
-    [:orange, :red, :white, :blue]
+    %i[orange red white blue]
   end
 
   def player_names

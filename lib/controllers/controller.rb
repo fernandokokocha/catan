@@ -1,12 +1,12 @@
 class Controller
-  def initialize request
+  def initialize(request)
     @request = request
   end
 
   def invoke
     error = validate
     if error
-      raise InvalidParameters.new(error)
+      raise InvalidParameters, error
     else
       execute
     end
@@ -16,8 +16,7 @@ class Controller
     nil
   end
 
-  def execute
-  end
+  def execute; end
 
   class InvalidParameters < StandardError
   end

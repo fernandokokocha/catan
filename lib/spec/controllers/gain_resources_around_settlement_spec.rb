@@ -2,13 +2,15 @@ describe GainResourcesAroundSettlement do
   let(:valid_current_player) { Player.new('Bartek', :orange) }
   let(:valid_place) { 8 }
   let(:valid_map) { Map.new }
-  let(:valid_request) { {:map => valid_map,
-                         :place => valid_place,
-                         :current_player => valid_current_player} }
+  let(:valid_request) do
+    { map: valid_map,
+      place: valid_place,
+      current_player: valid_current_player }
+  end
 
   it 'raises error if request is nil' do
     request = nil
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Params is not a hash'
     )
@@ -16,7 +18,7 @@ describe GainResourcesAroundSettlement do
 
   it 'raises error if request is not a hash' do
     request = []
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Params is not a hash'
     )
@@ -25,7 +27,7 @@ describe GainResourcesAroundSettlement do
   it 'requires current_player' do
     request = valid_request
     request.delete(:current_player)
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Missing :current_player key in params'
     )
@@ -34,7 +36,7 @@ describe GainResourcesAroundSettlement do
   it 'raises error if current_player is nil' do
     request = valid_request
     request[:current_player] = nil
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':current_player key is not a Player'
     )
@@ -43,7 +45,7 @@ describe GainResourcesAroundSettlement do
   it 'raises error if current_player is not a player' do
     request = valid_request
     request[:current_player] = "Let me play, I'm a player"
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':current_player key is not a Player'
     )
@@ -52,7 +54,7 @@ describe GainResourcesAroundSettlement do
   it 'requires place' do
     request = valid_request
     request.delete(:place)
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Missing :place key in params'
     )
@@ -61,7 +63,7 @@ describe GainResourcesAroundSettlement do
   it 'raises error if place is nil' do
     request = valid_request
     request[:place] = nil
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':place key is not an Integer'
     )
@@ -70,7 +72,7 @@ describe GainResourcesAroundSettlement do
   it 'raises error if place is NaN' do
     request = valid_request
     request[:place] = '1'
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':place key is not an Integer'
     )
@@ -79,7 +81,7 @@ describe GainResourcesAroundSettlement do
   it 'requires map' do
     request = valid_request
     request.delete(:map)
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Missing :map value key in params'
     )
@@ -88,7 +90,7 @@ describe GainResourcesAroundSettlement do
   it 'raises error if map is nil' do
     request = valid_request
     request[:map] = nil
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':map key is not a Map'
     )
@@ -97,7 +99,7 @@ describe GainResourcesAroundSettlement do
   it 'raises error if map is not a map' do
     request = valid_request
     request[:map] = 'There ore and there lumber'
-    expect{ GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
+    expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':map key is not a Map'
     )
@@ -106,7 +108,7 @@ describe GainResourcesAroundSettlement do
   context 'when valid request' do
     it 'can be successfully invoked' do
       request = valid_request
-      expect{ GainResourcesAroundSettlement.new(request).invoke }.not_to raise_error
+      expect { GainResourcesAroundSettlement.new(request).invoke }.not_to raise_error
     end
 
     it 'gives player one of every resources around' do

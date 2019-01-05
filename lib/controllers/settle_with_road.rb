@@ -6,10 +6,10 @@ class SettleWithRoad < Controller
 
   def validate
     return 'Params is not a hash' unless @request.is_a?(Hash)
-    return 'Missing :map key in params' unless @request.has_key?(:map)
-    return 'Missing :place key in params' unless @request.has_key?(:place)
-    return 'Missing :neighbour key in params' unless @request.has_key?(:neighbour)
-    return 'Missing :current_player key in params' unless @request.has_key?(:current_player)
+    return 'Missing :map key in params' unless @request.key?(:map)
+    return 'Missing :place key in params' unless @request.key?(:place)
+    return 'Missing :neighbour key in params' unless @request.key?(:neighbour)
+    return 'Missing :current_player key in params' unless @request.key?(:current_player)
 
     @map = @request[:map]
     @place = @request[:place]

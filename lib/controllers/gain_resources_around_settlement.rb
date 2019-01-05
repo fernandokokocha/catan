@@ -2,15 +2,16 @@ class GainResourcesAroundSettlement < Controller
   def execute
     @map.get_fields_of_place(@place).each do |field|
       next if field.resource == :desert
+
       @current_player.resources[field.resource] += 1
     end
   end
 
   def validate
     return 'Params is not a hash' unless @request.is_a?(Hash)
-    return 'Missing :map value key in params' unless @request.has_key?(:map)
-    return 'Missing :place key in params' unless @request.has_key?(:place)
-    return 'Missing :current_player key in params' unless @request.has_key?(:current_player)
+    return 'Missing :map value key in params' unless @request.key?(:map)
+    return 'Missing :place key in params' unless @request.key?(:place)
+    return 'Missing :current_player key in params' unless @request.key?(:current_player)
 
     @map = @request[:map]
     @place = @request[:place]

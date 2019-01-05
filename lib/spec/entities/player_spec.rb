@@ -4,7 +4,7 @@ describe Player do
   end
 
   it 'has resources' do
-    expect{ @player.resources }.not_to raise_error
+    expect { @player.resources }.not_to raise_error
   end
 
   RESOURCE_NAMES.each do |resource_name|

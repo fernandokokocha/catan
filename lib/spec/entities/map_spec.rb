@@ -27,15 +27,15 @@ describe Map do
 
   describe '#place' do
     it 'fails when try to get nil-place' do
-      expect{ @map.place(nil) }.to raise_error(Map::WrongIndexError)
+      expect { @map.place(nil) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'fails when try to get too low-numbered place' do
-      expect{ @map.place(0) }.to raise_error(Map::WrongIndexError)
+      expect { @map.place(0) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'fails when try to get too high-numbered place' do
-      expect{ @map.place(55) }.to raise_error(Map::WrongIndexError)
+      expect { @map.place(55) }.to raise_error(Map::WrongIndexError)
     end
 
     describe 'layers' do
@@ -102,7 +102,6 @@ describe Map do
       expect_place_in_spot(54, 5)
     end
 
-
     describe 'roads' do
       it 'has every place with empty roads array' do
         @map.places.each do |place|
@@ -133,15 +132,15 @@ describe Map do
 
   describe '#get_neighbours' do
     it 'fails when try to get neighbours of nil-place' do
-      expect{ @map.get_neighbours(nil) }.to raise_error(Map::WrongIndexError)
+      expect { @map.get_neighbours(nil) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'fails when try to get neighbours of too low-numbered place' do
-      expect{ @map.get_neighbours(0) }.to raise_error(Map::WrongIndexError)
+      expect { @map.get_neighbours(0) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'fails when try to get neighbours of too high-numbered place' do
-      expect{ @map.get_neighbours(55) }.to raise_error(Map::WrongIndexError)
+      expect { @map.get_neighbours(55) }.to raise_error(Map::WrongIndexError)
     end
 
     def self.expect_neighbours(place_index, neighbour_indexes)
@@ -194,15 +193,15 @@ describe Map do
 
   describe '#field' do
     it 'return nil when try to get nil-field' do
-      expect{ @map.field(nil) }.to raise_error(Map::WrongIndexError)
+      expect { @map.field(nil) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'fails when try to get too low-numbered field' do
-      expect{ @map.field(0) }.to raise_error(Map::WrongIndexError)
+      expect { @map.field(0) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'fails when try to get too high-numbered field' do
-      expect{ @map.field(20) }.to raise_error(Map::WrongIndexError)
+      expect { @map.field(20) }.to raise_error(Map::WrongIndexError)
     end
 
     describe 'numbers' do
@@ -211,7 +210,7 @@ describe Map do
       end
 
       it 'has one field with numbers 2 and 12' do
-        [2,12].each do |number|
+        [2, 12].each do |number|
           fields = @map.fields.each.select do |field|
             field.number == number
           end
@@ -220,7 +219,7 @@ describe Map do
       end
 
       it 'has two fields with numbers 3,4,5,6,8,9,10,11' do
-        [3,4,5,6,8,9,10,11].each do |number|
+        [3, 4, 5, 6, 8, 9, 10, 11].each do |number|
           fields = @map.fields.each.select do |field|
             field.number == number
           end
@@ -279,15 +278,15 @@ describe Map do
 
   describe '#get_fields_of_place' do
     it 'fails when try to get too low-numbered fields of place' do
-      expect{ @map.get_fields_of_place(0) }.to raise_error(Map::WrongIndexError)
+      expect { @map.get_fields_of_place(0) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'fails when try to get too high-numbered fields of place' do
-      expect{ @map.get_fields_of_place(55) }.to raise_error(Map::WrongIndexError)
+      expect { @map.get_fields_of_place(55) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'returns nil when try to get nil fields of place' do
-      expect{ @map.get_fields_of_place(nil) }.to raise_error(Map::WrongIndexError)
+      expect { @map.get_fields_of_place(nil) }.to raise_error(Map::WrongIndexError)
     end
 
     def self.expect_fields_of_place(place_index, fields_indexes)
@@ -338,15 +337,15 @@ describe Map do
 
   describe '#get_places_of_field' do
     it 'fails when try to get too low-numbered places of field' do
-      expect{ @map.get_places_of_field(0) }.to raise_error(Map::WrongIndexError)
+      expect { @map.get_places_of_field(0) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'fails when try to get too high-numbered places of field' do
-      expect{ @map.get_places_of_field(20) }.to raise_error(Map::WrongIndexError)
+      expect { @map.get_places_of_field(20) }.to raise_error(Map::WrongIndexError)
     end
 
     it 'returns nil when try to get nil places of field' do
-      expect{ @map.get_places_of_field(nil) }.to raise_error(Map::WrongIndexError)
+      expect { @map.get_places_of_field(nil) }.to raise_error(Map::WrongIndexError)
     end
 
     def self.expect_places_of_field(field_index, places_indexes)
@@ -379,14 +378,14 @@ describe Map do
       @map.build_road(valid_place, valid_neighbour, valid_player)
       @map.build_road(valid_place, valid_neighbour2, valid_player)
       expect(@map.place(valid_place).roads).to contain_exactly([valid_neighbour, valid_player],
-                                                                   [valid_neighbour2, valid_player])
+                                                               [valid_neighbour2, valid_player])
     end
 
     it 'appends other roads for neighbour' do
       @map.build_road(valid_place, valid_neighbour, valid_player)
       @map.build_road(valid_place2, valid_neighbour, valid_player)
       expect(@map.place(valid_neighbour).roads).to contain_exactly([valid_place, valid_player],
-                                                                       [valid_place2, valid_player])
+                                                                   [valid_place2, valid_player])
     end
   end
 end

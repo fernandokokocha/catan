@@ -4,13 +4,15 @@ describe EndTurn do
   let(:second_player) { Player.new('Walo', :red) }
   let(:players) { [first_player, second_player] }
   let(:current_player) { first_player }
-  let(:valid_request) { {:turn => turn,
-                         :players => players,
-                         :current_player => current_player} }
+  let(:valid_request) do
+    { turn: turn,
+      players: players,
+      current_player: current_player }
+  end
 
   it 'raises error if request is nil' do
     request = nil
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Params is not a hash'
     )
@@ -18,7 +20,7 @@ describe EndTurn do
 
   it 'raises error if request is not a hash' do
     request = []
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Params is not a hash'
     )
@@ -27,7 +29,7 @@ describe EndTurn do
   it 'requires turn' do
     request = valid_request
     request.delete(:turn)
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Missing :turn key in params'
     )
@@ -36,7 +38,7 @@ describe EndTurn do
   it 'raises error if turn is nil' do
     request = valid_request
     request[:turn] = nil
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':turn value is not an Integer'
     )
@@ -45,7 +47,7 @@ describe EndTurn do
   it 'raises error if turn is NaN' do
     request = valid_request
     request[:turn] = 'First'
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':turn value is not an Integer'
     )
@@ -54,7 +56,7 @@ describe EndTurn do
   it 'requires players' do
     request = valid_request
     request.delete(:players)
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Missing :players key in params'
     )
@@ -63,7 +65,7 @@ describe EndTurn do
   it 'raises error if players is nil' do
     request = valid_request
     request[:players] = nil
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':players value is not an array'
     )
@@ -72,7 +74,7 @@ describe EndTurn do
   it 'raises error if players is not array' do
     request = valid_request
     request[:players] = first_player
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':players value is not an array'
     )
@@ -81,7 +83,7 @@ describe EndTurn do
   it 'raises error if players is empty array' do
     request = valid_request
     request[:players] = []
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':players value is empty array'
     )
@@ -90,7 +92,7 @@ describe EndTurn do
   it 'raises error if players contains nil' do
     request = valid_request
     request[:players] = [first_player, nil]
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Illegal entry in :players value'
     )
@@ -99,7 +101,7 @@ describe EndTurn do
   it 'raises error if players contains not a Player' do
     request = valid_request
     request[:players] = [first_player, "Let me play, I'm a player"]
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Illegal entry in :players value'
     )
@@ -108,7 +110,7 @@ describe EndTurn do
   it 'requires current_player' do
     request = valid_request
     request.delete(:current_player)
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Missing :current_player key in params'
     )
@@ -117,7 +119,7 @@ describe EndTurn do
   it 'raises error if current_player is nil' do
     request = valid_request
     request[:current_player] = nil
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':current_player value is not a Player'
     )
@@ -126,7 +128,7 @@ describe EndTurn do
   it 'raises error if current_player is not a player' do
     request = valid_request
     request[:current_player] = "Let me play, I'm a player"
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       ':current_player value is not a Player'
     )
@@ -135,7 +137,7 @@ describe EndTurn do
   it 'raises error if players does not contain current_player' do
     request = valid_request
     request[:current_player] = Player.new('Marcin', :white)
-    expect{ EndTurn.new(request).invoke }.to raise_error(
+    expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Current player not present in players list'
     )
@@ -144,7 +146,7 @@ describe EndTurn do
   it 'raises error if current_player is equal not not the same as a player' do
     request = valid_request
     request[:current_player] = Player.new('Bartek', :orange)
-    expect{ EndTurn.new(request).invoke }.to raise_error(Controller::InvalidParameters)
+    expect { EndTurn.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
   context 'when valid request' do
@@ -205,7 +207,6 @@ describe EndTurn do
             expect(subject[:current_player]).to be(first_player)
           end
         end
-
       end
 
       context 'when fourth turn' do

@@ -12,16 +12,10 @@ class Settings
   end
 
   def numbers_dist
-    Array.new(1, 2) +
-      Array.new(2, 3) +
-      Array.new(2, 4) +
-      Array.new(2, 5) +
-      Array.new(2, 6) +
-      Array.new(2, 8) +
-      Array.new(2, 9) +
-      Array.new(2, 10) +
-      Array.new(2, 11) +
-      Array.new(1, 12)
+    [2] +
+      ((3..6).to_a * 2) +
+      ((8..11).to_a * 2) +
+      [12]
   end
 
   def resources_dist

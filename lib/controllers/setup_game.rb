@@ -1,4 +1,21 @@
 class SetupGame < Controller
+  def expected_params
+    {
+      players: Array
+    }
+  end
+
+  def validate
+    error = validate_params and return error
+
+    return ':players key is empty' if @request[:players].empty?
+    return 'Non-unique player names' if duplicates?(player_names)
+    return 'Non-unique player colors' if duplicates?(player_colors)
+    return 'Illegal color' if player_colors - valid_colors != []
+
+    nil
+  end
+
   def execute
     @response = {}
     @response[:map] = setup_map
@@ -6,21 +23,6 @@ class SetupGame < Controller
     @response[:current_player] = setup_current_player
     @response[:turn] = 1
     @response
-  end
-
-  def validate
-    return 'Params is not a hash' unless @request.is_a?(Hash)
-    return 'Missing :players key in params' unless @request.key?(:players)
-
-    players = @request[:players]
-
-    return ':players key is not an array' unless players.is_a?(Array)
-    return ':players key is empty' if players.empty?
-    return 'Non-unique player names' if duplicates?(player_names)
-    return 'Non-unique player colors' if duplicates?(player_colors)
-    return 'Illegal color' if player_colors - valid_colors != []
-
-    nil
   end
 
   private

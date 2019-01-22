@@ -33,7 +33,7 @@ describe SetupGame do
     request[:players] = 2
     expect { SetupGame.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':players key is not an array'
+      ':players value is not of type Array'
     )
   end
 

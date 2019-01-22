@@ -38,7 +38,7 @@ describe GainResourcesAroundSettlement do
     request[:current_player] = nil
     expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':current_player key is not a Player'
+      ':current_player value is not of type Player'
     )
   end
 
@@ -47,7 +47,7 @@ describe GainResourcesAroundSettlement do
     request[:current_player] = "Let me play, I'm a player"
     expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':current_player key is not a Player'
+      ':current_player value is not of type Player'
     )
   end
 
@@ -65,7 +65,7 @@ describe GainResourcesAroundSettlement do
     request[:place] = nil
     expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':place key is not an Integer'
+      ':place value is not of type Integer'
     )
   end
 
@@ -74,7 +74,7 @@ describe GainResourcesAroundSettlement do
     request[:place] = '1'
     expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':place key is not an Integer'
+      ':place value is not of type Integer'
     )
   end
 
@@ -83,7 +83,7 @@ describe GainResourcesAroundSettlement do
     request.delete(:map)
     expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      'Missing :map value key in params'
+      'Missing :map key in params'
     )
   end
 
@@ -92,7 +92,7 @@ describe GainResourcesAroundSettlement do
     request[:map] = nil
     expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':map key is not a Map'
+      ':map value is not of type Map'
     )
   end
 
@@ -101,7 +101,7 @@ describe GainResourcesAroundSettlement do
     request[:map] = 'There ore and there lumber'
     expect { GainResourcesAroundSettlement.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':map key is not a Map'
+      ':map value is not of type Map'
     )
   end
 

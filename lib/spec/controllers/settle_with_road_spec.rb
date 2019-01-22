@@ -40,7 +40,7 @@ describe SettleWithRoad do
     request[:map] = nil
     expect { SettleWithRoad.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':map value is not a Map'
+      ':map value is not of type Map'
     )
   end
 
@@ -49,7 +49,7 @@ describe SettleWithRoad do
     request[:map] = "hey trust me, I'm a map"
     expect { SettleWithRoad.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':map value is not a Map'
+      ':map value is not of type Map'
     )
   end
 
@@ -172,7 +172,7 @@ describe SettleWithRoad do
     request[:current_player] = nil
     expect { SettleWithRoad.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':current_player value is not a Player'
+      ':current_player value is not of type Player'
     )
   end
 
@@ -181,7 +181,7 @@ describe SettleWithRoad do
     request[:current_player] = 'A player'
     expect { SettleWithRoad.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
-      ':current_player value is not a Player'
+      ':current_player value is not of type Player'
     )
   end
 

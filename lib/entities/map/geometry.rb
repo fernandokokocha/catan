@@ -36,60 +36,35 @@
 #                41----40
 
 class Geometry
-  CIRCUIT_OF_LAYER = [nil, 6, 18, 30].freeze
-  LAYER_LIMIT_PER_LAYER = [nil, 6, 24, 54].freeze
+  PLACES_CIRCUIT_PER_LAYER = [nil, 6, 18, 30].freeze
+  MAX_PLACE_INDEX_PER_LAYER = [nil, 6, 24, 54].freeze
+  
+  FIELDS_CIRCUIT_PER_LAYER = [nil, 1, 6, 12].freeze
+  MAX_FIELD_INDEX_PER_PLAYER = [nil, 1, 7, 19].freeze
 
   def get_neighbours_indexes(place)
     GetNeighboursIndexes.call(place)
   end
 
   def get_fields_indexes_of_place(place)
-    index = place.index
-
-    result = Array.new(3)
-    base = place.layer < 3 ? 1 : 6
-    result[0] = base + place.side * (place.layer - 1)
-    result[0] += 1 if place.spot > 3
-    case place.layer
-    when 1
-      result[1] = index
-      result[1] += 6 if result[1] < 2
-      result[2] = index + 1
-    when 2
-      result[1] = index - place.side + 1
-      result[1] += 12 if result[1] <= 7
-
-      if [1, 2].include? place.spot
-        result[2] = index - place.side + 2
-      else
-        result[2] = 2 + place.side
-        result[2] -= 6 if result[2] > 7
-      end
-    else
-      if place.spot == 3
-        result[1] = 6 + place.side * 2 + 1
-      elsif place.spot == 5
-        result[1] = 6 + place.side * 2 + 2
-        result[1] -= 12 if result[1] > 19
-      end
-    end
-    result.compact
+    GetFieldsIndexesOfPlace.call(place)
   end
-
-  private
 
   class GetNeighboursIndexes
     def self.call(place)
-      self.new.call(place)
+      new.call(place)
     end
 
     def call(place)
       index = place.index
       layer = place.layer
 
+      places_circuit = PLACES_CIRCUIT_PER_LAYER[layer]
+      max_place_index = MAX_PLACE_INDEX_PER_LAYER[layer]
+
       [
-        calc_forward_neighbour_from_same_layer(index, CIRCUIT_OF_LAYER[layer], LAYER_LIMIT_PER_LAYER[layer]),
-        calc_backward_neighbour_from_same_layer(index, CIRCUIT_OF_LAYER[layer], LAYER_LIMIT_PER_LAYER[layer]),
+        calc_forward_neighbour_from_same_layer(index, places_circuit, max_place_index),
+        calc_backward_neighbour_from_same_layer(index, places_circuit, max_place_index),
         calc_neighbour_from_other_layer(index, place)
       ].compact
     end
@@ -118,7 +93,7 @@ class Geometry
     end
 
     def calc_neighbour_for_layer_1(index)
-      return LAYER_LIMIT_PER_LAYER[2] if index == 1
+      return MAX_PLACE_INDEX_PER_LAYER[2] if index == 1
       (index + 1) * 3
     end
 
@@ -132,13 +107,13 @@ class Geometry
 
     def calc_neighbour_for_layer_2_from_layer_3(place)
       result = 7 - place.side * 4 + place.index * 3
-      result += CIRCUIT_OF_LAYER[3] if result <= LAYER_LIMIT_PER_LAYER[2]
+      result += PLACES_CIRCUIT_PER_LAYER[3] if result <= MAX_PLACE_INDEX_PER_LAYER[2]
       result
     end
 
     def calc_neighbour_for_layer_2_from_layer_1(place)
       result = (place.index / 3) - 1
-      result -= CIRCUIT_OF_LAYER[1] if result > LAYER_LIMIT_PER_LAYER[1]
+      result -= PLACES_CIRCUIT_PER_LAYER[1] if result > MAX_PLACE_INDEX_PER_LAYER[1]
       result
     end
 
@@ -146,7 +121,70 @@ class Geometry
       return nil unless [3, 5].include?(place.spot)
 
       result = 2 + place.spot + place.side * 3
-      result -= CIRCUIT_OF_LAYER[2] if result > LAYER_LIMIT_PER_LAYER[2]
+      result -= PLACES_CIRCUIT_PER_LAYER[2] if result > MAX_PLACE_INDEX_PER_LAYER[2]
+      result
+    end
+  end
+
+  class GetFieldsIndexesOfPlace
+    def self.call(place)
+      new.call(place)
+    end
+
+    def call(place)
+      case place.layer
+      when 1
+        calc_fields_for_layer_1(place)
+      when 2
+        calc_fields_for_layer_2(place)
+      else
+        calc_fields_for_layer_3(place)
+      end
+    end
+
+    def calc_fields_for_layer_1(place)
+      [
+        calc_field_from_lower_layer(place),
+        place.index == 1 ? 7 : place.index,
+        place.index + 1
+      ]
+    end
+
+    def calc_fields_for_layer_2(place)
+      result = Array.new(3)
+      result[0] = calc_field_from_lower_layer(place)
+      result[1] = calc_field_from_higher_layer(place)
+
+      result[2] = if [1, 2].include? place.spot
+                    calc_next_forward_field(result[1], 3)
+                  else
+                    calc_next_forward_field(result[0], 2)
+                  end
+      result
+    end
+
+    def calc_fields_for_layer_3(place)
+      result = [calc_field_from_lower_layer(place)]
+      result << calc_next_forward_field(result[0], 3) if [3, 5].include? place.spot
+      result
+    end
+
+    def calc_field_from_lower_layer(place)
+      base = place.layer < 3 ? 1 : 6
+      result = base + place.side * (place.layer - 1)
+      result += 1 if place.spot > 3
+      result
+    end
+
+    def calc_field_from_higher_layer(place)
+      result = place.index - place.side + 1
+      result += 12 if result <= 7
+      result
+    end
+
+    def calc_next_forward_field(field_index, layer)
+      result = field_index + 1
+      result -= FIELDS_CIRCUIT_PER_LAYER[layer] if result > MAX_FIELD_INDEX_PER_PLAYER[layer]
       result
     end
   end

@@ -115,12 +115,21 @@ class Geometry
 
   def calc_neighbour_for_layer_2(place)
     if [1, 2].include? place.spot
-      result = 7 - place.side * 4 + place.index * 3
-      result += CIRCUIT_OF_LAYER[3] if result <= LAYER_LIMIT_PER_LAYER[2]
+      calc_neighbour_for_layer_2_from_layer_3(place)
     else
-      result = (place.index - 3) / 3
-      result -= CIRCUIT_OF_LAYER[1] if result > LAYER_LIMIT_PER_LAYER[1]
+      calc_neighbour_for_layer_2_from_layer_1(place)
     end
+  end
+
+  def calc_neighbour_for_layer_2_from_layer_3(place)
+    result = 7 - place.side * 4 + place.index * 3
+    result += CIRCUIT_OF_LAYER[3] if result <= LAYER_LIMIT_PER_LAYER[2]
+    result
+  end
+
+  def calc_neighbour_for_layer_2_from_layer_1(place)
+    result = (place.index / 3) - 1
+    result -= CIRCUIT_OF_LAYER[1] if result > LAYER_LIMIT_PER_LAYER[1]
     result
   end
 

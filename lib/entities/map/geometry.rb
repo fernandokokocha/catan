@@ -40,14 +40,7 @@ class Geometry
   LAYER_LIMIT_PER_LAYER = [nil, 6, 24, 54].freeze
 
   def get_neighbours_indexes(place)
-    index = place.index
-    layer = place.layer
-
-    [
-      calc_forward_neighbour_from_same_layer(index, CIRCUIT_OF_LAYER[layer], LAYER_LIMIT_PER_LAYER[layer]),
-      calc_backward_neighbour_from_same_layer(index, CIRCUIT_OF_LAYER[layer], LAYER_LIMIT_PER_LAYER[layer]),
-      calc_neighbour_from_other_layer(index, place)
-    ].compact
+    GetNeighboursIndexes.call(place)
   end
 
   def get_fields_indexes_of_place(place)
@@ -85,59 +78,76 @@ class Geometry
 
   private
 
-  def calc_forward_neighbour_from_same_layer(index, circuit, layer_limit)
-    result =  index + 1
-    result -= circuit if result > layer_limit
-    result
-  end
-
-  def calc_backward_neighbour_from_same_layer(index, circuit, layer_limit)
-    result =  index + circuit - 1
-    result -= circuit if result > layer_limit
-    result
-  end
-
-  def calc_neighbour_from_other_layer(index, place)
-    case place.layer
-    when 1
-      calc_neighbour_for_layer_1(index)
-    when 2
-      calc_neighbour_for_layer_2(place)
-    else
-      calc_neighbour_for_layer_3(place)
+  class GetNeighboursIndexes
+    def self.call(place)
+      self.new.call(place)
     end
-  end
 
-  def calc_neighbour_for_layer_1(index)
-    return LAYER_LIMIT_PER_LAYER[2] if index == 1
-    (index + 1) * 3
-  end
+    def call(place)
+      index = place.index
+      layer = place.layer
 
-  def calc_neighbour_for_layer_2(place)
-    if [1, 2].include? place.spot
-      calc_neighbour_for_layer_2_from_layer_3(place)
-    else
-      calc_neighbour_for_layer_2_from_layer_1(place)
+      [
+        calc_forward_neighbour_from_same_layer(index, CIRCUIT_OF_LAYER[layer], LAYER_LIMIT_PER_LAYER[layer]),
+        calc_backward_neighbour_from_same_layer(index, CIRCUIT_OF_LAYER[layer], LAYER_LIMIT_PER_LAYER[layer]),
+        calc_neighbour_from_other_layer(index, place)
+      ].compact
     end
-  end
 
-  def calc_neighbour_for_layer_2_from_layer_3(place)
-    result = 7 - place.side * 4 + place.index * 3
-    result += CIRCUIT_OF_LAYER[3] if result <= LAYER_LIMIT_PER_LAYER[2]
-    result
-  end
+    def calc_forward_neighbour_from_same_layer(index, circuit, layer_limit)
+      result =  index + 1
+      result -= circuit if result > layer_limit
+      result
+    end
 
-  def calc_neighbour_for_layer_2_from_layer_1(place)
-    result = (place.index / 3) - 1
-    result -= CIRCUIT_OF_LAYER[1] if result > LAYER_LIMIT_PER_LAYER[1]
-    result
-  end
+    def calc_backward_neighbour_from_same_layer(index, circuit, layer_limit)
+      result =  index + circuit - 1
+      result -= circuit if result > layer_limit
+      result
+    end
 
-  def calc_neighbour_for_layer_3(place)
-    return nil unless [3, 5].include?(place.spot)
+    def calc_neighbour_from_other_layer(index, place)
+      case place.layer
+      when 1
+        calc_neighbour_for_layer_1(index)
+      when 2
+        calc_neighbour_for_layer_2(place)
+      else
+        calc_neighbour_for_layer_3(place)
+      end
+    end
 
-    result = 2 + place.spot + place.side * 3
-    result -= CIRCUIT_OF_LAYER[2] if result > LAYER_LIMIT_PER_LAYER[2]
-    result
+    def calc_neighbour_for_layer_1(index)
+      return LAYER_LIMIT_PER_LAYER[2] if index == 1
+      (index + 1) * 3
+    end
+
+    def calc_neighbour_for_layer_2(place)
+      if [1, 2].include? place.spot
+        calc_neighbour_for_layer_2_from_layer_3(place)
+      else
+        calc_neighbour_for_layer_2_from_layer_1(place)
+      end
+    end
+
+    def calc_neighbour_for_layer_2_from_layer_3(place)
+      result = 7 - place.side * 4 + place.index * 3
+      result += CIRCUIT_OF_LAYER[3] if result <= LAYER_LIMIT_PER_LAYER[2]
+      result
+    end
+
+    def calc_neighbour_for_layer_2_from_layer_1(place)
+      result = (place.index / 3) - 1
+      result -= CIRCUIT_OF_LAYER[1] if result > LAYER_LIMIT_PER_LAYER[1]
+      result
+    end
+
+    def calc_neighbour_for_layer_3(place)
+      return nil unless [3, 5].include?(place.spot)
+
+      result = 2 + place.spot + place.side * 3
+      result -= CIRCUIT_OF_LAYER[2] if result > LAYER_LIMIT_PER_LAYER[2]
+      result
+    end
   end
 end

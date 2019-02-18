@@ -70,6 +70,13 @@ class Map
     place(neighbour).add_road(place, player)
   end
 
+  def ==(other)
+    return false if self.class != other.class
+    @places.each.with_index { |place, i| return false if place != other.places[i] }
+    @fields.each.with_index { |field, i| return false if field != other.fields[i] }
+    true
+  end
+
   class WrongIndexError < StandardError
   end
 

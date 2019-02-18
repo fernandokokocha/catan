@@ -10,4 +10,12 @@ class Player
       @resources[resource] = 0
     end
   end
+
+  def ==(other)
+    return false if self.class != other.class
+    return false if @name != other.name
+    return false if @color != other.color
+    return false if @resources != other.resources
+    true
+  end
 end

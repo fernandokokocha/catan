@@ -143,9 +143,9 @@ describe EndTurn do
     )
   end
 
-  it 'raises error if current_player is equal not not the same as a player' do
+  it 'raises error if current_player is equal not the same as a player' do
     request = valid_request
-    request[:current_player] = Player.new('Bartek', :orange)
+    request[:current_player] = Player.new('Wojtas', :orange)
     expect { EndTurn.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 

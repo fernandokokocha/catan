@@ -9,4 +9,13 @@ Dir[File.join(__dir__, 'controllers', '*.rb')].each { |file| require file }
 
 class Catan
   attr_accessor :map, :players, :current_player, :turn
+
+  def ==(other)
+    return false if self.class != other.class
+    return false if @map != other.map
+    return false if @players != other.players
+    return false if @current_player != other.current_player
+    return false if @turn != other.turn
+    true
+  end
 end

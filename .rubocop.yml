@@ -14,3 +14,6 @@ Style/AndOr:
 
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
+
+Security/MarshalLoad:
+  Enabled: false

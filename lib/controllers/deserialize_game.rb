@@ -12,8 +12,6 @@ class DeserializeGame < Controller
   end
 
   def execute
-    # eventually:
-    # Marshal.load(@request[:dump])
-    nil
+    Marshal.load(@request[:dump])
   end
 end

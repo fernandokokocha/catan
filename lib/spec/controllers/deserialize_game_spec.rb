@@ -44,11 +44,4 @@ describe DeserializeGame do
       ':dump value is not of type String'
     )
   end
-
-  context 'when valid request' do
-    it 'can be successfully invoked' do
-      request = valid_request
-      expect { DeserializeGame.new(request).invoke }.not_to raise_error
-    end
-  end
 end

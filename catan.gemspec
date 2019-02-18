@@ -9,4 +9,6 @@ Gem::Specification.new do |s|
   s.files         = ['lib/catan.rb'] + Dir['lib/entities/*.rb'] + Dir['lib/controllers/*.rb']
   s.license       = 'MIT'
   s.platform      = Gem::Platform.local
+  s.add_development_dependency 'rspec', '~> 3.7'
+  s.add_development_dependency 'rubocop', '~> 0.62'
 end

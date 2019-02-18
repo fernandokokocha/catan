@@ -1,28 +1,28 @@
-### Catan - The Settlers of Catan in Ruby TDD
+# Catan - The Settlers of Catan in Ruby TDD
 
-### Short timeline
+## Short timeline
 
 1. Started in March 2015 in TDD
 2. Abandoned in June 2015
 3. Long, long break. No particular reason for that.
 4. Picked up again in September 2018 as a cool way of imitating legacy code (I did learn a lot in the meantime)
 
-### Requirements
+## Requirements
 
-#### Ruby
+For usage:
+* Ruby 2.4.1
 
-No particular version is required. Works fine for 2.4.1, although started for some earlier version.
+For development (see `catan.gemspec`):
+* RSpec 3.7
+* Rubocop 0.62
+* overcommit 0.46
 
-#### Rspec
+Overcommit tool uses Rubocop and RSpec on the adequate development phases. There's no need for additional configuration on your side.
 
-No particular version is required. Works fine for 3.7, although started for some earlier version.
-
-### Run tests
+## Test
 
 Issue `rspec` in the root directory.
 
-### Rubocop
+## RuboCop
 
-Rubocop is used in version 0.62.0.
-
-Default configuration has been slightly changed in global `.rubocop.yml` file, and also even more narrowed down in `spec` directory.
+Issue `rubocop` in the root directory.

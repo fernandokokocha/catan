@@ -38,7 +38,7 @@
 class Geometry
   PLACES_CIRCUIT_PER_LAYER = [nil, 6, 18, 30].freeze
   MAX_PLACE_INDEX_PER_LAYER = [nil, 6, 24, 54].freeze
-  
+
   FIELDS_CIRCUIT_PER_LAYER = [nil, 1, 6, 12].freeze
   MAX_FIELD_INDEX_PER_PLAYER = [nil, 1, 7, 19].freeze
 

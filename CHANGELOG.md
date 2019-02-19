@@ -1,5 +1,9 @@
 ## [Unreleased]
+### Added
+- Factory method for `Map` entity
 
+### Changed
+- `initialize` method for `Map` entity made private
 
 ## [0.0.4] - 2019-02-19
 ### Added

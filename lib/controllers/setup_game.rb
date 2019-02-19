@@ -28,7 +28,7 @@ class SetupGame < Controller
   private
 
   def setup_map
-    Map.new
+    Map.new_random
   end
 
   def setup_players

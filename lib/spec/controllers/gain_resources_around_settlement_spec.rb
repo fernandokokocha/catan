@@ -1,7 +1,7 @@
 describe GainResourcesAroundSettlement do
   let(:valid_current_player) { Player.new('Bartek', :orange) }
   let(:valid_place) { 8 }
-  let(:valid_map) { Map.new }
+  let(:valid_map) { Map.new_random }
   let(:valid_request) do
     { map: valid_map,
       place: valid_place,
@@ -112,7 +112,7 @@ describe GainResourcesAroundSettlement do
     end
 
     it 'gives player one of every resources around' do
-      map = Map.new
+      map = Map.new_random
       map.fields[1] = Field.new(2, :ore, 1)
       map.fields[7] = Field.new(8, :lumber, 1)
       map.fields[8] = Field.new(9, :brick, 1)
@@ -123,7 +123,7 @@ describe GainResourcesAroundSettlement do
     end
 
     it 'gives player two resources if fields repeats' do
-      map = Map.new
+      map = Map.new_random
       map.fields[1] = Field.new(2, :ore, 1)
       map.fields[7] = Field.new(8, :brick, 1)
       map.fields[8] = Field.new(9, :brick, 1)
@@ -134,7 +134,7 @@ describe GainResourcesAroundSettlement do
     end
 
     it 'gives player three resources if fields repeats' do
-      map = Map.new
+      map = Map.new_random
       map.fields[1] = Field.new(2, :brick, 1)
       map.fields[7] = Field.new(8, :brick, 1)
       map.fields[8] = Field.new(9, :brick, 1)
@@ -145,7 +145,7 @@ describe GainResourcesAroundSettlement do
     end
 
     it 'ignores desert' do
-      map = Map.new
+      map = Map.new_random
       map.fields[1] = Field.new(2, :desert, 1)
       map.fields[7] = Field.new(8, :grain, 1)
       map.fields[8] = Field.new(9, :brick, 1)
@@ -156,7 +156,7 @@ describe GainResourcesAroundSettlement do
     end
 
     it 'gives only two resources if place has two fields' do
-      map = Map.new
+      map = Map.new_random
       map.fields[7] = Field.new(8, :grain, 1)
       map.fields[8] = Field.new(9, :wool, 1)
       request = valid_request
@@ -167,7 +167,7 @@ describe GainResourcesAroundSettlement do
     end
 
     it 'gives only one resource if place has two same fields' do
-      map = Map.new
+      map = Map.new_random
       map.fields[7] = Field.new(8, :wool, 1)
       map.fields[8] = Field.new(9, :wool, 1)
       request = valid_request
@@ -178,7 +178,7 @@ describe GainResourcesAroundSettlement do
     end
 
     it 'gives only one resource if place has one field' do
-      map = Map.new
+      map = Map.new_random
       map.fields[7] = Field.new(8, :lumber, 1)
       request = valid_request
       request[:map] = map

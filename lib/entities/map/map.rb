@@ -1,11 +1,8 @@
 class Map
   attr_accessor :places, :fields, :settings, :geometry
 
-  def initialize
-    @settings = Settings.new
-    @geometry = Geometry.new
-    @places = initialize_places
-    @fields = initialize_fields
+  def self.new_random
+    new
   end
 
   def place(index)
@@ -81,6 +78,13 @@ class Map
   end
 
   private
+
+  def initialize
+    @settings = Settings.new
+    @geometry = Geometry.new
+    @places = initialize_places
+    @fields = initialize_fields
+  end
 
   def initialize_places
     max = settings.max_place_index

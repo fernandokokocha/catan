@@ -6,7 +6,7 @@ describe Map do
   let(:valid_neighbour2) { 6 }
 
   before(:each) do
-    @map = Map.new
+    @map = Map.new_random
   end
 
   it 'has proper number of places' do

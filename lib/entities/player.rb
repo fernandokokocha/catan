@@ -22,11 +22,15 @@ class Player
   end
 
   def to_json
+    to_hash.to_json
+  end
+
+  def to_hash
     {
       color: @color,
       name: @name,
       resources: @resources
-    }.to_json
+    }
   end
 
   def self.from_json(json)

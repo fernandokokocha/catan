@@ -1,5 +1,5 @@
 describe Map do
-  let(:valid_player) { Player.new('Bartek', :orange) }
+  let(:valid_player) { Player.new(name: 'Bartek', color: :orange) }
   let(:valid_place) { 1 }
   let(:valid_neighbour) { 2 }
   let(:valid_place2) { 3 }

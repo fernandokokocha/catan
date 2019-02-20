@@ -34,8 +34,8 @@ class SetupGame < Controller
   def setup_players
     players = []
     @request[:players].each do |player|
-      players << Player.new(player[:name],
-                            player[:color])
+      players << Player.new(name: player[:name],
+                            color: player[:color])
     end
     players
   end

@@ -1,5 +1,5 @@
 describe GainResourcesAroundSettlement do
-  let(:valid_current_player) { Player.new('Bartek', :orange) }
+  let(:valid_current_player) { Player.new(name: 'Bartek', color: :orange) }
   let(:valid_place) { 8 }
   let(:valid_map) { Map.new_random }
   let(:valid_request) do

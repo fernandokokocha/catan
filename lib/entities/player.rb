@@ -4,7 +4,7 @@ class Player
   attr_reader :name, :color
   attr_accessor :resources
 
-  def initialize(name, color, resources = {})
+  def initialize(name:, color:, resources: {})
     @name = name
     @color = color
     @resources = {}
@@ -31,6 +31,10 @@ class Player
 
   def self.from_json(json)
     player_data = JSON.parse(json)
-    new(player_data['name'], player_data['color'].to_sym, player_data['resources'].symbolize_keys)
+    new(
+      name: player_data['name'],
+      color: player_data['color'].to_sym,
+      resources: player_data['resources'].symbolize_keys
+    )
   end
 end

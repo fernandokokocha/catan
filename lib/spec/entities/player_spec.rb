@@ -1,5 +1,5 @@
 describe Player do
-  let(:player) { Player.new('Player', :blue) }
+  let(:player) { Player.new(name: 'Player', color: :blue) }
 
   it 'has resources' do
     expect { player.resources }.not_to raise_error
@@ -26,7 +26,7 @@ describe Player do
 
     context 'some resources' do
       let(:resources) { { ore: 1, lumber: 2, wool: 3, grain: 4, brick: 5 } }
-      let(:player) { Player.new('Player', :blue, resources) }
+      let(:player) { Player.new(name: 'Player', color: :blue, resources: resources) }
       let(:json) { '{"color":"blue","name":"Player","resources":{"ore":1,"lumber":2,"wool":3,"grain":4,"brick":5}}' }
 
       it 'is serializable' do

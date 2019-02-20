@@ -2,7 +2,7 @@ describe SettleWithRoad do
   let(:valid_place) { 1 }
   let(:valid_neighbour) { 2 }
   let(:valid_map) { Map.new_random }
-  let(:valid_current_player) { Player.new('Bartek', :orange) }
+  let(:valid_current_player) { Player.new(name: 'Bartek', color: :orange) }
   let(:valid_request) do
     { place: valid_place,
       neighbour: valid_neighbour,
@@ -135,7 +135,7 @@ describe SettleWithRoad do
   end
 
   it 'fails when place is already taken' do
-    player = Player.new('Player', :orange)
+    player = Player.new(name: 'Player', color: :orange)
     map = valid_map
     map.place(valid_place).settle(player)
     request = valid_request
@@ -147,7 +147,7 @@ describe SettleWithRoad do
   end
 
   it 'fails when neighbour is already taken' do
-    player = Player.new('Player', :orange)
+    player = Player.new(name: 'Player', color: :orange)
     map = valid_map
     map.place(valid_neighbour).settle(player)
     request = valid_request

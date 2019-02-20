@@ -1,7 +1,7 @@
 describe EndTurn do
   let(:turn) { 1 }
-  let(:first_player) { Player.new('Bartek', :orange) }
-  let(:second_player) { Player.new('Walo', :red) }
+  let(:first_player) { Player.new(name: 'Bartek', color: :orange) }
+  let(:second_player) { Player.new(name: 'Walo', color: :red) }
   let(:players) { [first_player, second_player] }
   let(:current_player) { first_player }
   let(:valid_request) do
@@ -136,7 +136,7 @@ describe EndTurn do
 
   it 'raises error if players does not contain current_player' do
     request = valid_request
-    request[:current_player] = Player.new('Marcin', :white)
+    request[:current_player] = Player.new(name: 'Marcin', color: :white)
     expect { EndTurn.new(request).invoke }.to raise_error(
       Controller::InvalidParameters,
       'Current player not present in players list'
@@ -145,7 +145,7 @@ describe EndTurn do
 
   it 'raises error if current_player is equal not the same as a player' do
     request = valid_request
-    request[:current_player] = Player.new('Wojtas', :orange)
+    request[:current_player] = Player.new(name: 'Wojtas', color: :orange)
     expect { EndTurn.new(request).invoke }.to raise_error(Controller::InvalidParameters)
   end
 
@@ -227,7 +227,7 @@ describe EndTurn do
     end
 
     context 'when 3 players' do
-      let(:third_player) { Player.new('Spejson', :white) }
+      let(:third_player) { Player.new(name: 'Spejson', color: :white) }
       let(:players) { [first_player, second_player, third_player] }
 
       context 'when first turn' do

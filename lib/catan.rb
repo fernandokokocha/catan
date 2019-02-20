@@ -1,3 +1,5 @@
+require File.join(__dir__, 'utils', 'monkey_patching.rb')
+
 require File.join(__dir__, 'entities', 'map', 'settings.rb')
 require File.join(__dir__, 'entities', 'map', 'geometry.rb')
 require File.join(__dir__, 'entities', 'map', 'map.rb')
